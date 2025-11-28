@@ -13,14 +13,20 @@ import PhoneOTPComponent from "../components/Register";
 import toast from "react-hot-toast";
 
 
+/* -----------------------------
+   FIXED SCRIPT LOADER (NO HOOKS)
+--------------------------------*/
 const loadRazorpayScript = () => {
   return new Promise((resolve, reject) => {
-    const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+    const existingScript = document.querySelector(
+      'script[src="https://checkout.razorpay.com/v1/checkout.js"]'
+    );
+
     if (existingScript) {
       resolve(true);
       return;
-    }
-const navigate = useNavigate();
+    } // <-- FIXED missing closing brace
+
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.onload = () => resolve(true);
@@ -29,7 +35,14 @@ const navigate = useNavigate();
   });
 };
 
+
 export default function SportsBooking() {
+
+  /* --------------------------
+      FIXED: useNavigate HERE
+  ---------------------------*/
+  const navigate = useNavigate();
+
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedSport, setSelectedSport] = useState(null);
@@ -51,6 +64,10 @@ export default function SportsBooking() {
   const convenienceFee = 20;
   const total = bookingFee + convenienceFee;
 
+
+  /* -------------------------
+     CALENDAR FUNCTIONS
+  --------------------------*/
   const getDaysInMonth = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
@@ -95,6 +112,7 @@ export default function SportsBooking() {
     return prevMonth < new Date(today.getFullYear(), today.getMonth(), 1);
   };
 
+
   const days = getDaysInMonth();
 
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -103,18 +121,27 @@ export default function SportsBooking() {
     'July', 'August', 'September', 'October', 'November', 'December',
   ];
 
+  /* -------------------------
+     LOGIN STATE LISTENER
+  --------------------------*/
   useEffect(() => {
     const handler = () => setLogin(isLoggedIn());
     window.addEventListener("authChanged", handler);
     return () => window.removeEventListener("authChanged", handler);
   }, []);
 
+  /* -------------------------
+     AUTO-SELECT DEFAULT SPORT
+  --------------------------*/
   useEffect(() => {
     if (!selectedSport && sports.length > 0) {
       setSelectedSport(sports[0].name.toLowerCase());
     }
   }, [sports, selectedSport]);
 
+  /* -------------------------
+     FETCH AVAILABLE SLOTS
+  --------------------------*/
   useEffect(() => {
     if (!selectedSport || !selectedDate || sports.length === 0) return;
 
@@ -137,6 +164,7 @@ export default function SportsBooking() {
       });
   }, [selectedSport, selectedDate, sports]);
 
+
   const formatTime = (timeStr) => {
     const [h, m] = timeStr.split(':');
     let hourNum = parseInt(h, 10);
@@ -145,6 +173,10 @@ export default function SportsBooking() {
     return `${hourNum}:${m} ${ampm}`;
   };
 
+
+  /* -------------------------
+     FIND MAX CONTINUOUS DURATION
+  --------------------------*/
   const getMaxDuration = (slotId = selectedSlot) => {
     if (!slotId) return 1;
     const index = availableSlots.findIndex(s => s.id === slotId);
@@ -161,6 +193,10 @@ export default function SportsBooking() {
     return max;
   };
 
+
+  /* -------------------------
+     HANDLE PAYMENT & BOOKING
+  --------------------------*/
   const handleBooking = async (partial = false) => {
     if (!selectedSport || !selectedSlot || !selectedDate) {
       toast.error("Please select sport, slot, and date before proceeding.");
@@ -223,11 +259,15 @@ export default function SportsBooking() {
       setIsProcessingPayment(false);
     }
   };
+
+
+  /* -------------------------
+     DISABLE PAST SLOTS
+  --------------------------*/
   const isPastSlot = (slot) => {
     const now = new Date();
     const slotDate = new Date(selectedDate);
 
-    // If slot is NOT today → never past
     if (
       slotDate.getDate() !== now.getDate() ||
       slotDate.getMonth() !== now.getMonth() ||
@@ -236,14 +276,17 @@ export default function SportsBooking() {
       return false;
     }
 
-    // Build slot start time as a Date object
     const [h, m] = slot.start_time.split(":").map(Number);
     const slotStart = new Date();
     slotStart.setHours(h, m, 0, 0);
 
-    return slotStart < now; // true if slot already passed
+    return slotStart < now;
   };
 
+
+  /* -------------------------
+     UI STARTS HERE
+  --------------------------*/
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-[Montserrat] pt-32">
 
@@ -265,7 +308,6 @@ export default function SportsBooking() {
 
         {/* LEFT COLUMN */}
         <div className="lg:flex-1 space-y-6">
-
           <SportSelector
             sports={sports}
             selectedSport={selectedSport}
@@ -307,40 +349,41 @@ export default function SportsBooking() {
               {availableSlots.length === 0 ? (
                 <p className="text-emerald-100/70">No slots available.</p>
               ) : (
-                availableSlots.filter(slot => !isPastSlot(slot)) .map((slot) => {
-                  const slotText = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
-                  const isSelected = selectedSlot === slot.id;
+                availableSlots
+                  .filter(slot => !isPastSlot(slot))
+                  .map((slot) => {
+                    const slotText = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
+                    const isSelected = selectedSlot === slot.id;
 
-                  return (
-                    <button
-                      key={slot.id}
-                      disabled={slot.is_taken}
-                      onClick={() => {
-                        const max = getMaxDuration(slot.id);
-                        setSelectedSlot(slot.id);
-                        if (duration > max) setDuration(1);
-                      }}
-                      className={`
-                        relative p-4 rounded-xl text-sm font-semibold transition-all duration-300
-                        ${
-                          slot.is_taken
-                            ? 'bg-white/5 text-emerald-200/40 cursor-not-allowed'
-                            : isSelected
-                            ? 'bg-gradient-to-br from-emerald-400 to-lime-300 text-emerald-900 shadow-lg scale-110'
-                            : 'bg-white/5 text-emerald-50 hover:bg-white/15 hover:scale-105 hover:shadow-md'
-                        }
-                      `}
-                    >
-                      {slotText}
-
-                    </button>
-                  );
-                })
+                    return (
+                      <button
+                        key={slot.id}
+                        disabled={slot.is_taken}
+                        onClick={() => {
+                          const max = getMaxDuration(slot.id);
+                          setSelectedSlot(slot.id);
+                          if (duration > max) setDuration(1);
+                        }}
+                        className={`
+                          relative p-4 rounded-xl text-sm font-semibold transition-all duration-300
+                          ${
+                            slot.is_taken
+                              ? 'bg-white/5 text-emerald-200/40 cursor-not-allowed'
+                              : isSelected
+                              ? 'bg-gradient-to-br from-emerald-400 to-lime-300 text-emerald-900 shadow-lg scale-110'
+                              : 'bg-white/5 text-emerald-50 hover:bg-white/15 hover:scale-105 hover:shadow-md'
+                          }
+                        `}
+                      >
+                        {slotText}
+                      </button>
+                    );
+                  })
               )}
             </div>
           </div>
 
-          {/* DURATION */}
+          {/* DURATION SELECTOR */}
           <DurationSelector
             duration={duration}
             setDuration={setDuration}
@@ -349,24 +392,20 @@ export default function SportsBooking() {
           />
 
           {/* TURF SELECTOR */}
-          <div >
-            <TurfSelector
-              turfs={turfs}
-              selectedTurf={selectedTurf}
-              setSelectedTurf={setSelectedTurf}
-            />
-          </div>
+          <TurfSelector
+            turfs={turfs}
+            selectedTurf={selectedTurf}
+            setSelectedTurf={setSelectedTurf}
+          />
 
           {/* BOOKING SUMMARY */}
-          <div >
-            <BookingSummary
-              selectedSportObj={sports.find(s => s.name.toLowerCase() === selectedSport)}
-              convenienceFee={convenienceFee}
-              total={total}
-              selectedSlot={availableSlots.find(s => s.id === selectedSlot)}
-              duration={duration}
-            />
-          </div>
+          <BookingSummary
+            selectedSportObj={sports.find(s => s.name.toLowerCase() === selectedSport)}
+            convenienceFee={convenienceFee}
+            total={total}
+            selectedSlot={availableSlots.find(s => s.id === selectedSlot)}
+            duration={duration}
+          />
 
           {/* ACTION BUTTONS */}
           <div className="
@@ -418,24 +457,24 @@ export default function SportsBooking() {
                 Login to Continue
               </button>
             )}
-
-            
           </div>
         </div>
       </div>
-         {overlay && (
-  <div
-    className="fixed inset-0 z-[70] flex items-center justify-center"
-    style={{ backdropFilter: 'blur(2px)' }}
-  >
-    <PhoneOTPComponent
-      onSuccess={() => {
-        setLogin(true);
-        setOverlay(false);
-      }}
-    />
-  </div>
-)}
+
+      {/* OTP MODAL */}
+      {overlay && (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center"
+          style={{ backdropFilter: 'blur(2px)' }}
+        >
+          <PhoneOTPComponent
+            onSuccess={() => {
+              setLogin(true);
+              setOverlay(false);
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
