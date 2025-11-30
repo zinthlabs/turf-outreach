@@ -60,7 +60,7 @@ export const fetchSports = () => {
 
 export const fetchSlots = (date, serviceId) => {
   return authAPI.get('/slots/', {
-    params: { date, service_id: serviceId }
+    params: { date, service: serviceId }
   });
 };
 export const createBooking = (bookingData) => {

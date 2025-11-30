@@ -55,11 +55,11 @@ export default function DurationSelector({ duration, setDuration, getMaxDuration
         {/* PLUS BUTTON */}
         <button
           onClick={() => setDuration(duration + 1)}
-          disabled={duration >= maxDuration}
+          disabled={duration >= maxDuration || duration === 4}
           className={`
             w-14 h-14 rounded-2xl font-bold text-3xl flex items-center justify-center transition-all duration-200
             ${
-              duration >= maxDuration
+              duration >= maxDuration || duration === 4
                 ? 'bg-white/5 text-emerald-200/40 cursor-not-allowed'
                 : 'bg-white/10 text-emerald-50 hover:bg-white/20 hover:shadow-md hover:scale-110'
             }

@@ -6,6 +6,38 @@ export default function MyBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState(null);
+// Convert "HH:MM" → minutes
+const toMinutes = (str) => {
+  const [h, m] = str.split(":").map(Number);
+  return h * 60 + m;
+};
+
+// Convert minutes → "HH:MM" 24-hour
+const fromMinutes = (mins) => {
+  const h = Math.floor(mins / 60) % 24;
+  const m = mins % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+};
+
+// Convert "HH:MM" → "h:MM AM/PM"
+const to12Hour = (timeStr) => {
+  if (!timeStr) return "NA";
+  let [h, m] = timeStr.split(":").map(Number);
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  return `${h}:${String(m).padStart(2, "0")} ${ampm}`;
+};
+
+//  Format Range
+ const formatTimeRange = (startTime24, durationHours) => {
+  const startMins = toMinutes(startTime24);
+  const endMins = startMins + durationHours * 60;
+
+  const endTime24 = fromMinutes(endMins);
+
+  return `${to12Hour(startTime24)} – ${to12Hour(endTime24)}`;
+};
+
 
   useEffect(() => {
     const loadBookings = async () => {
@@ -108,7 +140,7 @@ export default function MyBookings() {
                       {b.service?.name}
                     </div>
                     <div className="text-sm text-emerald-100/60">
-                      {b.date} • {b.time_slot.start_time}
+                      {b.date} • {to12Hour(b.time_slot.start_time)}
                     </div>
                   </div>
 
@@ -144,7 +176,7 @@ export default function MyBookings() {
                     </p>
                     <p>
                       <strong className="text-emerald-300">Time:</strong>{" "}
-                      {b.time_slot.start_time} – {b.time_slot.end_time}
+                     {formatTimeRange(b.time_slot.start_time, b.duration_hours)}
                     </p>
                     <p>
                       <strong className="text-emerald-300">Duration:</strong>{" "}
