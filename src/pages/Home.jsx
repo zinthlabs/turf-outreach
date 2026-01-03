@@ -74,7 +74,7 @@ export default function Home() {
           {/* Powered by */}
           <div className="flex items-center gap-3">
             <span className="opacity-90 text-base">
-              Crafted by <a href="https://www.gratifylabs.in" target="_blank" rel="noopener noreferrer"><span className="text-green-400 font-semibold">Gratify Labs</span></a>
+              Crafted by <a href="https://www.gratifylabs.in" target="_blank" rel="noopener noreferrer"><span className="text-green-400 font-semibold">Zinth Labs</span> Pvt Ltd</a>
             </span>
           </div>
 
