@@ -270,7 +270,9 @@ export default function SportsBooking() {
 
       rzp.open();
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Failed to initiate booking. If the slot is temporarily locked because of payment failure, please try again later.", {
+        duration: 6000,
+      });
     } finally {
       setIsProcessingPayment(false);
     }
