@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, LogOut } from "lucide-react";
 import { isLoggedIn } from "../services/is_logged_in";
 
-export default function Navbar({ openLogin }) {
+export default function Navbar({ openLogin, siteName }) {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user") || "{}"));
   const loggedIn = isLoggedIn();
@@ -36,7 +36,7 @@ export default function Navbar({ openLogin }) {
           to="/"
           className="text-3xl font-bold tracking-tight font-[Montserrat] drop-shadow"
         >
-          Strikers Yard
+          {siteName || "Strikers Yard"}
         </Link>
 
         {/* DESKTOP MENU */}

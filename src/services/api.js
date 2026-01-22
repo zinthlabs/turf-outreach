@@ -75,3 +75,7 @@ export const verifyPayment = (payload) => {
 export const fetchMyBookings = () => {
   return authAPI.get("/my-bookings/");
 };
+
+export const fetchSiteSettings = () => {
+  return authAPI.get("/site-settings/");
+};
