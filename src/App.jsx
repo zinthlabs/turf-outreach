@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import SportsBooking from "./pages/SportsBooking";
@@ -14,9 +14,17 @@ import { SiteProvider } from "./contexts/SiteContext";
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [redirectTo, setRedirectTo] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
-  const loggedIn = isLoggedIn();
-  // const [login,setLogin] = useState(isLoggedIn());
+  // Listen for authentication changes
+  useEffect(() => {
+    const handleAuthChange = () => {
+      setLoggedIn(isLoggedIn());
+    };
+
+    window.addEventListener("authChanged", handleAuthChange);
+    return () => window.removeEventListener("authChanged", handleAuthChange);
+  }, []);
 
 
   const openLogin = (path) => {
