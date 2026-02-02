@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Menu, X, LogOut } from "lucide-react";
 import { isLoggedIn } from "../services/is_logged_in";
+import { useSiteContext } from "../contexts/SiteContext";
 
-export default function Navbar({ openLogin, siteName }) {
+export default function Navbar({ openLogin }) {
+  const { siteName } = useSiteContext();
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user") || "{}"));
   const loggedIn = isLoggedIn();
