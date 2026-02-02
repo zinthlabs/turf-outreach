@@ -82,11 +82,11 @@ export default function Home() {
           <div className="flex gap-6 text-2xl">
 
 
-            <a href="https://www.instagram.com/strikers_yard/" target="_blank" className="hover:text-green-400 transition">
+            <a href="https://www.instagram.com/zinth.labs/" target="_blank" className="hover:text-green-400 transition">
               <Instagram size={26} />
             </a>
 
-            <a href="https://wa.me/917889479750" target="_blank" className="hover:text-green-400 transition">
+            <a href="https://wa.me/919186146089" target="_blank" className="hover:text-green-400 transition">
               <MessageCircle size={26} />
             </a>
           </div>
