@@ -36,7 +36,7 @@ export default function Navbar({ openLogin }) {
         {/* LOGO */}
         <Link
           to="/"
-          className="text-3xl font-bold tracking-tight font-[Montserrat] drop-shadow"
+          className="text-3xl font-bold tracking-tight font-[Montserrat] "
         >
           {siteName || "Strikers Yard"}
         </Link>

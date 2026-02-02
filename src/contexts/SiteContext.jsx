@@ -36,6 +36,21 @@ export const SiteProvider = ({ children }) => {
     useEffect(() => {
         // Update document title whenever siteName changes
         document.title = siteName;
+
+        // Update Open Graph meta tags for social media sharing
+        const updateMetaTag = (property, content) => {
+            let element = document.querySelector(`meta[property="${property}"]`);
+            if (!element) {
+                element = document.querySelector(`meta[name="${property}"]`);
+            }
+            if (element) {
+                element.setAttribute("content", content);
+            }
+        };
+
+        // Update Open Graph tags
+        updateMetaTag("og:title", siteName);
+        updateMetaTag("twitter:title", siteName);
     }, [siteName]);
 
     return (
