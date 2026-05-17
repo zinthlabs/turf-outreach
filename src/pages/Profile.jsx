@@ -38,10 +38,10 @@ export default function Profile() {
         setUser(response.data.user);
       }
 
-      setMessage("Profile updated successfully!");
+      setMessage("Dossier updated!");
       window.dispatchEvent(new Event("authChanged"));
-    } catch (err) {
-      setMessage("Failed to update profile.");
+    } catch {
+      setMessage("Update failed.");
     } finally {
       setIsSaving(false);
     }
@@ -56,105 +56,92 @@ export default function Profile() {
   };
 
   return (
-    <div className="relative min-h-screen pt-40 pb-16 px-4 sm:px-6">
+    <div className="relative min-h-screen pt-48 pb-20 px-4 bg-brutal-black">
 
 
       {/* BACKGROUND */}
       <div
-        className="absolute inset-0 -z-20 filter blur-[2px]"
+        className="absolute inset-0 -z-20 grayscale opacity-20"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1744565473172-a3c64b1e1bbb?q=80&w=1051&auto=format&fit=crop')",
+            "url('https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=1974&auto=format&fit=crop')",
           backgroundSize: "cover",
-          backgroundPosition: "center top",
+          backgroundPosition: "center",
         }}
       />
 
-      {/* DIM OVERLAY */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm -z-10" />
-
       {/* MAIN CARD */}
-      <div
-        className="
-          max-w-xl mx-auto w-full p-6 sm:p-8
-          rounded-3xl backdrop-blur-3xl bg-gray-950/20
-          border border-white/10 shadow-[0_24px_70px_rgba(0,0,0,0.55)]
-        "
-      >
+      <div className="max-w-2xl mx-auto w-full p-8 brutalist-card !bg-white">
 
         {/* HEADER */}
-        <div className="flex flex-col items-center mb-8">
-          <img
-            src="https://i.pinimg.com/736x/3e/77/89/3e7789b164213f91358aaa4a47bd8d95.jpg"
-            className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-emerald-400 shadow-xl object-cover"
-            alt="Profile Avatar"
-          />
+        <div className="flex flex-col items-center mb-12 border-b-8 border-black pb-8">
+          <div className="relative">
+            <img
+              src="https://i.pinimg.com/736x/3e/77/89/3e7789b164213f91358aaa4a47bd8d95.jpg"
+              className="w-32 h-32 border-8 border-black object-cover grayscale"
+              alt="Profile Avatar"
+            />
+            <div className="absolute -bottom-4 -right-4 bg-brutal-yellow border-4 border-black p-2">
+              <User size={32} strokeWidth={3} />
+            </div>
+          </div>
 
-          <h1 className="text-2xl sm:text-3xl font-bold mt-4 text-emerald-200 drop-shadow-lg text-center">
-            {user?.name || "Unnamed User"}
+          <h1 className="text-4xl font-black mt-8 text-black uppercase italic tracking-tighter">
+            {user?.name || "RECRUIT"}
           </h1>
 
-          <p className="text-emerald-100/70 text-sm mt-1 text-center break-all">
-            {user?.email || "No Email Added"}
+          <p className="text-black font-black uppercase text-sm tracking-widest mt-2 bg-brutal-yellow px-4 py-1">
+            {user?.email || "NO IDENTIFICATION"}
           </p>
         </div>
 
         {/* FORM */}
-        <div className="space-y-6">
+        <div className="space-y-8">
 
           {/* NAME */}
           <div>
-            <label className="block text-sm font-semibold mb-2 text-emerald-200/80">
-              Name
+            <label className="block text-xs font-black uppercase tracking-widest mb-2 text-black">
+              Codename
             </label>
-            <div className="
-              flex items-center gap-3 px-4 py-3 
-              border rounded-xl bg-white/5 border-white/10
-            ">
-              <User className="text-emerald-300 w-5 h-5" />
+            <div className="flex items-center gap-3 px-4 py-4 border-4 border-black bg-white focus-within:bg-brutal-yellow transition-colors">
+              <User className="text-black w-6 h-6" strokeWidth={3} />
               <input
                 type="text"
-                className="flex-1 bg-transparent outline-none text-emerald-100 text-sm sm:text-base"
+                className="flex-1 bg-transparent outline-none text-black font-black uppercase tracking-tighter text-xl"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
+                placeholder="Enter codename"
               />
             </div>
           </div>
 
           {/* EMAIL */}
           <div>
-            <label className="block text-sm font-semibold mb-2 text-emerald-200/80">
-              Email
+            <label className="block text-xs font-black uppercase tracking-widest mb-2 text-black">
+              Comms Link
             </label>
-            <div className="
-              flex items-center gap-3 px-4 py-3 
-              border rounded-xl bg-white/5 border-white/10
-            ">
-              <Mail className="text-emerald-300 w-5 h-5" />
+            <div className="flex items-center gap-3 px-4 py-4 border-4 border-black bg-white focus-within:bg-brutal-yellow transition-colors">
+              <Mail className="text-black w-6 h-6" strokeWidth={3} />
               <input
                 type="email"
-                className="flex-1 bg-transparent outline-none text-emerald-100 text-sm sm:text-base"
+                className="flex-1 bg-transparent outline-none text-black font-black uppercase tracking-tighter text-xl"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder="Enter comms link"
               />
             </div>
           </div>
 
           {/* PHONE (read-only) */}
           <div>
-            <label className="block text-sm font-semibold mb-2 text-emerald-200/80">
-              Phone Number
+            <label className="block text-xs font-black uppercase tracking-widest mb-2 text-black">
+              Direct Line
             </label>
-            <div className="
-              flex items-center gap-3 px-4 py-3 
-              border rounded-xl bg-gray-900/30 border-white/10
-            ">
-              <Phone className="text-gray-500 w-5 h-5" />
+            <div className="flex items-center gap-3 px-4 py-4 border-4 border-black bg-gray-200">
+              <Phone className="text-black/40 w-6 h-6" strokeWidth={3} />
               <input
                 type="text"
-                className="flex-1 bg-transparent outline-none text-gray-400 text-sm sm:text-base"
+                className="flex-1 bg-transparent outline-none text-black/40 font-black uppercase tracking-tighter text-xl"
                 value={user?.phone_number || ""}
                 disabled
               />
@@ -165,39 +152,28 @@ export default function Profile() {
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="
-              w-full py-3 sm:py-4 rounded-xl font-semibold
-              bg-gradient-to-r from-emerald-400 to-lime-300 text-emerald-900
-              shadow-xl hover:scale-[1.02] transition
-              disabled:bg-gray-500 disabled:text-gray-300 disabled:cursor-not-allowed
-            "
+            className="brutalist-button w-full text-2xl py-5 bg-brutal-yellow shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
-            {isSaving ? "Saving..." : "Save Changes"}
+            {isSaving ? "UPDATING..." : "COMMIT CHANGES"}
           </button>
 
           {/* LOGOUT BUTTON */}
           <button
             onClick={logout}
-            className="
-              w-full flex justify-center items-center gap-2 py-3 mt-1
-              bg-red-500 text-white rounded-xl text-sm sm:text-base
-              hover:bg-red-600 transition shadow-lg
-            "
+            className="w-full flex justify-center items-center gap-4 py-4 border-4 border-black bg-brutal-red text-white font-black uppercase tracking-widest hover:bg-black transition-colors"
           >
-            <LogOut size={18} /> Logout
+            <LogOut size={24} strokeWidth={3} /> ABORT SESSION
           </button>
 
           {/* MESSAGE */}
           {message && (
-            <p
-              className={`text-center mt-3 font-medium ${
-                message.includes("success")
-                  ? "text-emerald-300"
-                  : "text-red-400"
-              }`}
-            >
+            <div className={`text-center p-4 border-4 border-black font-black uppercase tracking-tighter ${
+                message.includes("updated")
+                  ? "bg-brutal-yellow text-black"
+                  : "bg-brutal-red text-white"
+              }`}>
               {message}
-            </p>
+            </div>
           )}
         </div>
       </div>

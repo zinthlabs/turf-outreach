@@ -25,41 +25,40 @@ export default function Navbar({ openLogin }) {
   };
 
   return (
-    <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[90vw] max-w-5xl z-40">
+    <div className="absolute top-8 left-1/2 -translate-x-1/2 w-[95vw] max-w-6xl z-50">
       <nav className="
-          flex items-center justify-between px-6 py-5 
-          rounded-2xl shadow-xl backdrop-blur-xl 
-          bg-gray-950/20 border border-white/15
-          text-white
+          flex items-center justify-between px-8 py-4
+          border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
+          text-black
         "
       >
         {/* LOGO */}
         <Link
           to="/"
-          className="text-3xl font-bold tracking-tight font-[Montserrat] "
+          className="text-4xl font-black italic tracking-tighter uppercase font-[Montserrat]"
         >
-          {siteName || "Strikers Yard"}
+          {siteName || "IRON HAVEN"}
         </Link>
 
         {/* DESKTOP MENU */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           <Link
             to="/"
-            className="font-semibold px-4 py-1 rounded-xl transition hover:bg-white/10 hover:text-emerald-300"
+            className="font-black uppercase tracking-widest text-sm px-4 py-2 hover:bg-brutal-yellow border-4 border-transparent hover:border-black transition-all"
           >
-            Home
+            Base
           </Link>
           <Link
             to="/booking"
-            className="font-semibold px-4 py-1 rounded-xl transition hover:bg-white/10 hover:text-emerald-300"
+            className="font-black uppercase tracking-widest text-sm px-4 py-2 hover:bg-brutal-yellow border-4 border-transparent hover:border-black transition-all"
           >
-            Book Turf
+            Book Session
           </Link>
           <Link
             to="/my-bookings"
-            className="font-semibold px-4 py-1 rounded-xl transition hover:bg-white/10 hover:text-emerald-300"
+            className="font-black uppercase tracking-widest text-sm px-4 py-2 hover:bg-brutal-yellow border-4 border-transparent hover:border-black transition-all"
           >
-            My Bookings
+            My Dossier
           </Link>
         </div>
 
@@ -68,26 +67,21 @@ export default function Navbar({ openLogin }) {
           {!loggedIn ? (
             <button
               onClick={openLogin}
-              className="
-                font-bold px-7 py-2 rounded-full transition 
-                border-2 border-emerald-400 
-                hover:bg-emerald-400 hover:text-black
-                hover:shadow-md
-              "
+              className="brutalist-button py-2 px-8 bg-brutal-red text-white"
             >
-              Login
+              Recruit
             </button>
           ) : (
             <>
               <Link
                 to="/profile"
-                className="font-semibold px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-emerald-300"
+                className="font-black uppercase tracking-widest text-sm px-4 py-2 hover:bg-brutal-yellow border-4 border-transparent hover:border-black transition-all"
               >
-                {user?.name || "User"}
+                {user?.name || "Operative"}
               </Link>
               <button
                 onClick={logout}
-                className="p-2 rounded-full hover:bg-white/10 text-emerald-300"
+                className="p-2 border-4 border-black bg-black text-white hover:bg-brutal-red transition-all"
               >
                 <LogOut size={24} />
               </button>
@@ -97,10 +91,10 @@ export default function Navbar({ openLogin }) {
 
         {/* MOBILE MENU BUTTON */}
         <button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-black p-2 border-4 border-black"
           onClick={() => setOpen(!open)}
         >
-          {open ? <X size={28} /> : <Menu size={28} />}
+          {open ? <X size={28} strokeWidth={3} /> : <Menu size={28} strokeWidth={3} />}
         </button>
       </nav>
 
@@ -108,31 +102,30 @@ export default function Navbar({ openLogin }) {
       {open && (
         <div
           className="
-            md:hidden mt-3 p-6 rounded-2xl backdrop-blur-xl 
-            bg-gray-950/40 border border-white/10 shadow-xl 
-            flex flex-col gap-4 text-white
+            md:hidden mt-4 p-6 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]
+            flex flex-col gap-4 text-black
           "
         >
           <Link
             to="/"
             onClick={() => setOpen(false)}
-            className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+            className="font-black uppercase tracking-widest py-3 border-b-4 border-black hover:bg-brutal-yellow px-2"
           >
-            Home
+            Base
           </Link>
           <Link
             to="/booking"
             onClick={() => setOpen(false)}
-            className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+            className="font-black uppercase tracking-widest py-3 border-b-4 border-black hover:bg-brutal-yellow px-2"
           >
-            Book Turf
+            Book Session
           </Link>
           <Link
             to="/my-bookings"
             onClick={() => setOpen(false)}
-            className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+            className="font-black uppercase tracking-widest py-3 border-b-4 border-black hover:bg-brutal-yellow px-2"
           >
-            My Bookings
+            My Dossier
           </Link>
 
           {/* LOGIN / LOGOUT MOBILE */}
@@ -142,28 +135,24 @@ export default function Navbar({ openLogin }) {
                 setOpen(false);
                 openLogin();
               }}
-              className="
-                w-full font-bold py-3 rounded-xl border-2 
-                border-emerald-400 hover:bg-emerald-400 
-                hover:text-black transition
-              "
+              className="brutalist-button bg-brutal-red text-white w-full"
             >
-              Login
+              Recruit
             </button>
           ) : (
             <>
               <Link
                 to="/profile"
                 onClick={() => setOpen(false)}
-                className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+                className="font-black uppercase tracking-widest py-3 hover:bg-brutal-yellow px-2"
               >
-                {user?.name || "User"}
+                {user?.name || "Operative"}
               </Link>
               <button
                 onClick={logout}
-                className="w-full font-semibold py-3 rounded-xl hover:bg-white/10 text-emerald-300"
+                className="brutalist-button bg-black text-white w-full"
               >
-                Logout
+                Retreat
               </button>
             </>
           )}

@@ -53,11 +53,11 @@ export default function SportsBooking() {
   const [availableSlots, setAvailableSlots] = useState([]);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [overlay, setOverlay] = useState(false);
-  const { sports, loading, error } = useSports();
+  const { sports } = useSports();
   const [login, setLogin] = useState(isLoggedIn());
 
   const turfs = [
-    { id: '7-a-side-turf-c', name: '7 a side Turf C' },
+    { id: '7-a-side-turf-c', name: 'Power Rack 1' },
   ];
 
   const bookingFee = 2000;
@@ -222,7 +222,7 @@ export default function SportsBooking() {
 
     try {
       const bookingResponse = await createBooking(bookingData);
-      const { booking_id, razorpay_order_id, razorpay_key_id, amount } =
+      const { razorpay_order_id, razorpay_key_id, amount } =
         bookingResponse.data || {};
 
       await loadRazorpayScript();
@@ -233,7 +233,7 @@ export default function SportsBooking() {
         key: razorpay_key_id,
         amount,
         currency: "INR",
-        name: "Strikers Yard",
+        name: "IRON HAVEN",
         order_id: razorpay_order_id,
         prefill: {
           name: storedUser?.name,
@@ -261,7 +261,7 @@ export default function SportsBooking() {
 
       const rzp = new window.Razorpay(options);
 
-      rzp.on('payment.failed', function (response) {
+      rzp.on('payment.failed', function () {
         toast.error("Payment failed. If the transaction failed, the selected slot will be released in approximately 12 minutes.", {
           duration: 6000,
         });
@@ -269,7 +269,7 @@ export default function SportsBooking() {
       });
 
       rzp.open();
-    } catch (error) {
+    } catch {
       toast.error("Failed to initiate booking. If the slot is temporarily locked because of payment failure, please try again later.", {
         duration: 6000,
       });
@@ -308,19 +308,18 @@ export default function SportsBooking() {
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden font-[Montserrat] pt-32">
 
-      {/* BLURRED BACKGROUND */}
+      {/* GRITTY BACKGROUND */}
       <div
-        className="absolute inset-0 -z-20 filter blur-[2px]"
+        className="absolute inset-0 -z-20 grayscale opacity-40"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1744565473172-a3c64b1e1bbb?q=80&w=1051&auto=format&fit=crop')",
+            "url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2070&auto=format&fit=crop')",
           backgroundSize: 'cover',
-          backgroundPosition: 'center top'
+          backgroundPosition: 'center'
         }}
       />
 
-      {/* DIM LAYER */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm -z-10" />
+      <div className="absolute inset-0 bg-brutal-black -z-30" />
 
       <div className="max-w-7xl mx-auto p-6 lg:flex lg:gap-6">
 
@@ -353,19 +352,15 @@ export default function SportsBooking() {
         <div className="lg:flex-1 space-y-6">
 
           {/* SLOT SELECTOR */}
-          <div className="
-            rounded-3xl backdrop-blur-3xl bg-gray-950/10 
-            border border-white/15 shadow-[0_24px_80px_rgba(0,0,0,0.55)]
-            p-7
-          ">
-            <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
-              <div className="w-1.5 h-8 bg-gradient-to-b from-emerald-300 to-lime-300 rounded-full" />
-              Select Slot
+          <div className="brutalist-card p-7 !bg-white">
+            <h2 className="text-3xl font-black text-black mb-6 uppercase italic flex items-center gap-3">
+              <div className="w-2 h-8 bg-brutal-red" />
+              Select Training Window
             </h2>
 
             <div className="grid grid-cols-2 gap-3">
               {availableSlots.length === 0 ? (
-                <p className="text-emerald-100/70">No slots available.</p>
+                <p className="text-black font-bold">No slots available.</p>
               ) : (
                 availableSlots
                   .filter(slot => !isPastSlot(slot))
@@ -383,12 +378,12 @@ export default function SportsBooking() {
                           if (duration > max) setDuration(1);
                         }}
                         className={`
-                          relative p-4 rounded-xl text-sm font-semibold transition-all duration-300
+                          relative p-4 text-sm font-black transition-all duration-200 border-4
                           ${slot.is_taken
-                            ? 'bg-white/5 text-emerald-200/40 cursor-not-allowed'
+                            ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed opacity-50'
                             : isSelected
-                              ? 'bg-gradient-to-br from-emerald-400 to-lime-300 text-emerald-900 shadow-lg scale-110'
-                              : 'bg-white/5 text-emerald-50 hover:bg-white/15 hover:scale-105 hover:shadow-md'
+                              ? 'bg-brutal-yellow text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-1 -translate-y-1'
+                              : 'bg-white text-black border-black hover:bg-gray-100'
                           }
                         `}
                       >
@@ -425,37 +420,21 @@ export default function SportsBooking() {
           />
 
           {/* ACTION BUTTONS */}
-          <div className="
-            rounded-3xl backdrop-blur-3xl bg-gray-950/10 
-            border border-white/15 shadow-[0_24px_80px_rgba(0,0,0,0.55)]
-            p-7 space-y-4
-          ">
+          <div className="brutalist-card p-7 space-y-4 !bg-black">
             {login ? (
               <>
                 <button
                   onClick={() => handleBooking(false)}
                   disabled={isProcessingPayment}
-                  className="
-                    w-full bg-gradient-to-r from-emerald-400 to-lime-300
-                    text-emerald-900 font-bold py-5 rounded-2xl shadow-xl
-                    transition-all duration-300 hover:shadow-2xl hover:scale-105 
-                    active:scale-95
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                  "
+                  className="brutalist-button w-full text-xl py-5 bg-brutal-yellow"
                 >
-                  {isProcessingPayment ? 'Processing...' : 'PROCEED TO PAY'}
+                  {isProcessingPayment ? 'Processing...' : 'CONFIRM BOOKING'}
                 </button>
 
                 <button
                   onClick={() => handleBooking(true)}
                   disabled={isProcessingPayment}
-                  className="
-                    w-full bg-gradient-to-r from-amber-500 to-orange-400
-                    text-white font-bold py-5 rounded-2xl shadow-xl
-                    transition-all duration-300 hover:shadow-2xl hover:scale-105 
-                    active:scale-95
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                  "
+                  className="brutalist-button w-full text-xl py-5 bg-white"
                 >
                   {isProcessingPayment ? 'Processing...' : 'PAY PARTIAL'}
                 </button>
@@ -464,12 +443,7 @@ export default function SportsBooking() {
               <button
                 onClick={() => setOverlay(true)}
                 disabled={isProcessingPayment}
-                className="
-                  w-full bg-gradient-to-r from-emerald-400 to-lime-300
-                  text-emerald-900 font-bold py-5 rounded-2xl shadow-xl
-                  transition-all duration-300 hover:shadow-2xl hover:scale-105 
-                  active:scale-95
-                "
+                className="brutalist-button w-full text-xl py-5 bg-brutal-red text-white"
               >
                 Login to Continue
               </button>

@@ -56,32 +56,17 @@ const to12Hour = (timeStr) => {
 
   if (loading) {
     return (
-      <div className="py-20 flex justify-center">
-        <Loader2 className="animate-spin w-10 h-10 text-emerald-400" />
+      <div className="py-20 flex justify-center bg-brutal-black min-h-screen">
+        <Loader2 className="animate-spin w-16 h-16 text-brutal-yellow" />
       </div>
     );
   }
 
   if (bookings.length === 0) {
     return (
-      <div className="relative min-h-screen pt-36">
-
-        {/* BACKGROUND IMAGE */}
-        <div
-          className="absolute inset-0 -z-20 filter blur-[2px]"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1744565473172-a3c64b1e1bbb?q=80&w=1051&auto=format&fit=crop')",
-            backgroundSize: "cover",
-            backgroundPosition: "center top"
-          }}
-        />
-
-        {/* DARK OVERLAY */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm -z-10" />
-
-        <div className="py-20 text-center text-emerald-100/80 text-xl">
-          You have no bookings yet.
+      <div className="relative min-h-screen pt-36 bg-brutal-black">
+        <div className="py-20 text-center text-white text-3xl font-black uppercase italic tracking-tighter">
+          NO MISSIONS LOGGED.
         </div>
       </div>
     );
@@ -90,40 +75,34 @@ const to12Hour = (timeStr) => {
   const toggleOpen = (id) => setOpenId(openId === id ? null : id);
 
   return (
-    <div className="relative min-h-screen pt-36">
+    <div className="relative min-h-screen pt-48 bg-brutal-black font-[Montserrat] pb-20">
 
-      {/* BACKGROUND IMAGE */}
+      {/* GRITTY BACKGROUND */}
       <div
-        className="absolute inset-0 -z-20 filter blur-[2px]"
+        className="absolute inset-0 -z-20 grayscale opacity-20"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1744565473172-a3c64b1e1bbb?q=80&w=1051&auto=format&fit=crop')",
+            "url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop')",
           backgroundSize: "cover",
-          backgroundPosition: "center top"
+          backgroundPosition: "center"
         }}
       />
-
-      {/* DARK OVERLAY */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm -z-10" />
 
       {/* MAIN CONTENT */}
       <div className="max-w-5xl mx-auto p-6">
 
-        <h1 className="text-4xl font-bold mb-10 text-emerald-200 drop-shadow-lg">
-          My Bookings
+        <h1 className="text-6xl font-black mb-12 text-white uppercase italic tracking-tighter border-l-8 border-brutal-red pl-6">
+          MY DOSSIER
         </h1>
 
-        <div className="space-y-5">
+        <div className="space-y-6">
           {bookings.map((b) => {
             const open = openId === b.booking_id;
 
             return (
               <div
                 key={b.booking_id}
-                className="
-                  rounded-3xl backdrop-blur-3xl bg-gray-950/20 
-                  border border-white/10 shadow-[0_24px_60px_rgba(0,0,0,0.55)]
-                "
+                className="brutalist-card !bg-white"
               >
 
                 {/* ---- TOP BAR ---- */}
@@ -131,63 +110,65 @@ const to12Hour = (timeStr) => {
                   onClick={() => toggleOpen(b.booking_id)}
                   className="
                     w-full flex justify-between items-center 
-                    px-6 py-5 text-left transition-all
-                    hover:bg-white/5 rounded-3xl
+                    px-6 py-6 text-left transition-all
+                    hover:bg-gray-100
                   "
                 >
                   <div>
-                    <div className="text-lg font-semibold text-emerald-200">
-                      {b.service?.name}
+                    <div className="text-2xl font-black text-black uppercase tracking-tighter">
+                      {b.service?.name.replace("Football", "Strength").replace("Cricket", "Cardio").replace("Badminton", "HIIT")}
                     </div>
-                    <div className="text-sm text-emerald-100/60">
+                    <div className="text-sm font-black text-black/60 uppercase tracking-widest mt-1">
                       {b.date} • {to12Hour(b.time_slot.start_time)}
                     </div>
                   </div>
 
-                  {/* STATUS BADGE */}
-                  <span
-                    className={`
-                      px-3 py-1 rounded-full text-xs font-semibold
-                      ${
-                        b.status === "paid"
-                          ? "bg-emerald-500/20 text-emerald-300"
-                          : b.status === "partial"
-                          ? "bg-yellow-500/20 text-yellow-300"
-                          : "bg-gray-500/20 text-gray-300"
-                      }
-                    `}
-                  >
-                    {b.status.toUpperCase()}
-                  </span>
+                  <div className="flex items-center gap-4">
+                    {/* STATUS BADGE */}
+                    <span
+                      className={`
+                        px-4 py-1 border-4 border-black text-xs font-black uppercase tracking-widest
+                        ${
+                          b.status === "paid"
+                            ? "bg-brutal-yellow text-black"
+                            : b.status === "partial"
+                            ? "bg-white text-black"
+                            : "bg-gray-200 text-black"
+                        }
+                      `}
+                    >
+                      {b.status.toUpperCase()}
+                    </span>
 
-                  {/* CHEVRON */}
-                  {open ? (
-                    <ChevronUp className="ml-3 text-emerald-200" />
-                  ) : (
-                    <ChevronDown className="ml-3 text-emerald-200" />
-                  )}
+                    {/* CHEVRON */}
+                    {open ? (
+                      <ChevronUp className="text-black" strokeWidth={4} />
+                    ) : (
+                      <ChevronDown className="text-black" strokeWidth={4} />
+                    )}
+                  </div>
                 </button>
 
                 {/* ---- EXPANDED DETAILS ---- */}
                 {open && (
-                  <div className="px-6 pb-6 text-emerald-100 animate-fadeIn">
+                  <div className="px-6 pb-6 text-black border-t-4 border-black pt-6 animate-fadeIn font-black uppercase text-sm tracking-widest space-y-2">
                     <p>
-                      <strong className="text-emerald-300">Date:</strong> {b.date}
+                      <span className="bg-black text-white px-2 py-1 mr-2">DATE:</span> {b.date}
                     </p>
                     <p>
-                      <strong className="text-emerald-300">Time:</strong>{" "}
+                      <span className="bg-black text-white px-2 py-1 mr-2">WINDOW:</span>{" "}
                      {formatTimeRange(b.time_slot.start_time, b.duration_hours)}
                     </p>
                     <p>
-                      <strong className="text-emerald-300">Duration:</strong>{" "}
+                      <span className="bg-black text-white px-2 py-1 mr-2">DURATION:</span>{" "}
                       {b.duration_hours} hour(s)
                     </p>
                     <p>
-                      <strong className="text-emerald-300">Payment ID:</strong>{" "}
-                      {b.payment_id || "Not Paid Yet"}
+                      <span className="bg-black text-white px-2 py-1 mr-2">TXID:</span>{" "}
+                      {b.payment_id || "PENDING"}
                     </p>
                     <p>
-                      <strong className="text-emerald-300">Booking ID:</strong>{" "}
+                      <span className="bg-black text-white px-2 py-1 mr-2">ID:</span>{" "}
                       {b.booking_id}
                     </p>
                   </div>
@@ -201,10 +182,10 @@ const to12Hour = (timeStr) => {
       {/* Animation */}
       <style>{`
         .animate-fadeIn {
-          animation: fadeIn .25s ease-out;
+          animation: fadeIn .2s ease-out;
         }
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-4px); }
+          from { opacity: 0; transform: translateY(-10px); }
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
