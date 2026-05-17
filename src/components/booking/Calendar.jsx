@@ -16,17 +16,10 @@ export default function Calendar({
   formatSelectedDate,
 }) {
   return (
-    <div className="
-      rounded-3xl 
-      backdrop-blur-3xl 
-      bg-gray-950/10 
-      border border-white/15 
-      shadow-[0_24px_80px_rgba(0,0,0,0.55)]
-      p-7
-    ">
-      <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
-        <div className="w-1.5 h-8 bg-gradient-to-b from-emerald-300 to-lime-300 rounded-full" />
-        Select Playing Date
+    <div className="brutalist-card p-7">
+      <h2 className="text-2xl font-black text-black mb-6 uppercase italic flex items-center gap-3">
+        <div className="w-2 h-8 bg-brutal-black" />
+        Select Training Date
       </h2>
 
       <div className="mb-4">
@@ -34,20 +27,20 @@ export default function Calendar({
           <button
             onClick={goToPreviousMonth}
             disabled={isPreviousMonthDisabled()}
-            className={`p-2.5 rounded-xl transition-all duration-200 ${
+            className={`p-2.5 transition-all duration-200 border-4 border-black ${
               isPreviousMonthDisabled()
-                ? 'bg-white/5 text-emerald-200/40 cursor-not-allowed'
-                : 'bg-white/10 text-emerald-50 hover:bg-white/20 hover:shadow-md'
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+                : 'bg-white text-black hover:bg-brutal-yellow'
             }`}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <span className="font-semibold text-lg text-emerald-50 tracking-wide">
+          <span className="font-black text-xl text-black uppercase tracking-tighter">
             {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
           </span>
           <button
             onClick={goToNextMonth}
-            className="p-2.5 rounded-xl bg-white/10 text-emerald-50 hover:bg-white/20 transition-all duration-200 hover:shadow-md"
+            className="p-2.5 border-4 border-black bg-white text-black hover:bg-brutal-yellow transition-all duration-200"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -57,7 +50,7 @@ export default function Calendar({
           {weekDays.map((day) => (
             <div
               key={day}
-              className="text-center text-xs font-semibold text-emerald-100/70 py-2"
+              className="text-center text-xs font-black text-black uppercase"
             >
               {day}
             </div>
@@ -79,14 +72,14 @@ export default function Calendar({
                 key={idx}
                 onClick={() => !disabled && setSelectedDate(day)}
                 disabled={disabled}
-                className={`aspect-square rounded-xl text-sm font-semibold transition-all duration-200 ${
+                className={`aspect-square text-sm font-black transition-all duration-200 border-4 ${
                   disabled
-                    ? 'text-emerald-200/35 cursor-not-allowed bg-white/5'
+                    ? 'text-gray-300 cursor-not-allowed bg-gray-50 border-gray-100'
                     : isSelected
-                    ? 'bg-gradient-to-br from-emerald-400 to-lime-300 text-emerald-950 shadow-lg scale-110'
+                    ? 'bg-brutal-yellow text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-1 -translate-y-1'
                     : isToday
-                    ? 'bg-emerald-800/70 text-emerald-50 hover:bg-emerald-700'
-                    : 'bg-white/5 text-emerald-50 hover:bg-white/15 hover:scale-105 hover:shadow-md'
+                    ? 'bg-black text-white border-black hover:bg-brutal-red'
+                    : 'bg-white text-black border-black hover:bg-gray-100'
                 }`}
               >
                 {day.getDate()}
@@ -97,18 +90,16 @@ export default function Calendar({
       </div>
 
       <div className="
-        mt-4 
-        rounded-2xl 
-        border border-white/20 
-        bg-gradient-to-br from-white/6 to-white/2 
-        backdrop-blur-2xl 
-        p-4 
+        mt-4
+        border-4 border-black
+        bg-brutal-black
+        p-4
         text-center
       ">
-        <div className="text-sm text-emerald-100/80 font-medium mb-1">
-          Selected Date
+        <div className="text-sm text-white font-black uppercase mb-1">
+          Target Date
         </div>
-        <div className="text-2xl font-bold bg-gradient-to-r from-emerald-300 to-lime-200 bg-clip-text text-transparent">
+        <div className="text-3xl font-black text-brutal-yellow uppercase italic tracking-tighter">
           {formatSelectedDate()}
         </div>
       </div>

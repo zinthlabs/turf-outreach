@@ -1,31 +1,21 @@
-import { FaFutbol } from "react-icons/fa";
-import { GiCricketBat, GiShuttlecock } from "react-icons/gi";
+import { Dumbbell, Activity, Timer } from "lucide-react";
 
 export default function SportSelector({ sports, selectedSport, onSelectSport }) {
-  
+
   // Map each sport to an icon
   const getIcon = (name) => {
     const sport = name.toLowerCase();
-    if (sport.includes("football") || sport.includes("soccer")) return <FaFutbol />;
-    if (sport.includes("cricket")) return <GiCricketBat />;
-    if (sport.includes("badminton")) return <GiShuttlecock />;
-    return <FaFutbol />; // fallback
+    if (sport.includes("football") || sport.includes("soccer")) return <Dumbbell />;
+    if (sport.includes("cricket")) return <Activity />;
+    if (sport.includes("badminton")) return <Timer />;
+    return <Dumbbell />; // fallback
   };
 
   return (
-    <div
-      className="
-        rounded-3xl 
-        backdrop-blur-3xl 
-        bg-gray-950/10 
-        border border-white/15 
-        shadow-[0_24px_80px_rgba(0,0,0,0.55)]
-        p-7
-      "
-    >
-      <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
-        <div className="w-1.5 h-8 bg-gradient-to-b from-emerald-300 to-lime-300 rounded-full" />
-        Select Sports
+    <div className="brutalist-card p-7">
+      <h2 className="text-2xl font-black text-black mb-6 uppercase italic flex items-center gap-3">
+        <div className="w-2 h-8 bg-brutal-black" />
+        Select Training Type
       </h2>
 
       <div className="grid grid-cols-2 gap-4">
@@ -37,15 +27,15 @@ export default function SportSelector({ sports, selectedSport, onSelectSport }) 
               key={sport.id}
               onClick={() => onSelectSport(sport.name.toLowerCase())}
               className={`
-                relative 
-                p-5 rounded-2xl 
-                transition-all duration-300 
-                flex flex-col items-center gap-3 
-                group
+                relative
+                p-5
+                transition-all duration-200
+                flex flex-col items-center gap-3
+                group border-4
                 ${
                   isSelected
-                    ? 'bg-gradient-to-br from-emerald-400 to-lime-300 text-emerald-950 shadow-lg scale-110'
-                    : 'bg-white/5 text-emerald-50 hover:bg-white/15 hover:scale-105 hover:shadow-md'
+                    ? 'bg-brutal-yellow text-black border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] -translate-x-1 -translate-y-1'
+                    : 'bg-white text-black border-black hover:bg-gray-100'
                 }
               `}
             >
@@ -54,20 +44,15 @@ export default function SportSelector({ sports, selectedSport, onSelectSport }) 
               <span
                 className={`
                   text-4xl transition-all duration-300
-                  ${isSelected ? 'text-emerald-900 scale-110' : 'text-emerald-100/90'}
+                  ${isSelected ? 'scale-110' : ''}
                 `}
               >
                 {getIcon(sport.name)}
               </span>
 
               {/* Sport Name */}
-              <span
-                className={`
-                  font-semibold transition-all duration-300
-                  ${isSelected ? 'text-emerald-900' : 'text-emerald-100/90'}
-                `}
-              >
-                {sport.name}
+              <span className="font-black uppercase tracking-tighter">
+                {sport.name.replace("Football", "Strength").replace("Cricket", "Cardio").replace("Badminton", "HIIT")}
               </span>
 
             </button>

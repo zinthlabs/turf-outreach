@@ -62,65 +62,52 @@ export default function BookingSummary({
     : null;
 
   return (
-    <div className="
-      rounded-3xl
-      backdrop-blur-3xl
-      bg-gray-950/10
-      border border-white/15
-      shadow-[0_24px_80px_rgba(0,0,0,0.55)]
-      p-7
-    ">
-      <h3 className="font-semibold text-xl mb-6 text-emerald-50">
-        Booking Summary
+    <div className="brutalist-card p-7 !bg-white">
+      <h3 className="font-black text-2xl mb-6 text-black uppercase italic tracking-tighter">
+        Mission Briefing
       </h3>
 
       <div className="space-y-4 mb-6">
         <div className="flex justify-between items-center">
-          <span className="text-emerald-100/80 font-medium">Booking Fee</span>
-          <span className="font-bold text-2xl text-emerald-50">
+          <span className="text-black font-black uppercase">Booking Fee</span>
+          <span className="font-black text-3xl text-black">
             ₹{bookingFee === 0 ? 0 : bookingFee - 20}
           </span>
         </div>
 
         <div className="flex justify-between items-center">
-          <span className="text-emerald-100/80 font-medium">Convenience Fee</span>
-          <span className="font-bold text-2xl text-emerald-50">
+          <span className="text-black font-black uppercase">Tax & Fees</span>
+          <span className="font-black text-3xl text-black">
             ₹{bookingFee === 0 ? 0 :convenienceFee }
           </span>
         </div>
 
-        <div className="border-t border-white/20 pt-4">
+        <div className="border-t-4 border-black pt-4">
           <div className="flex justify-between items-center">
-            <span className="font-bold text-lg text-emerald-50">
-              Total Amount
+            <span className="font-black text-xl text-black uppercase">
+              Total Damage
             </span>
-            <span className="text-3xl font-bold bg-gradient-to-r from-emerald-300 to-lime-200 bg-clip-text text-transparent">
-              ₹{bookingFee === 0 ? 0 :total - 20} 
+            <span className="text-4xl font-black text-brutal-red italic">
+              ₹{bookingFee === 0 ? 0 :total - 20}
             </span>
           </div>
         </div>
       </div>
 
       {/* Selected Time */}
-      <div className="
-        rounded-2xl
-        border border-white/20
-        bg-white/10
-        backdrop-blur-xl
-        p-4
-      ">
-        <div className="flex items-center gap-3 text-emerald-50">
-          <Clock className="w-5 h-5 text-emerald-300" />
+      <div className="border-4 border-black bg-black p-4">
+        <div className="flex items-center gap-3 text-white">
+          <Clock className="w-6 h-6 text-brutal-yellow" />
 
           <div>
-            <div className="text-xs text-emerald-100/60 font-medium">
-              Selected Time
+            <div className="text-xs text-brutal-yellow font-black uppercase tracking-widest">
+              Execution Window
             </div>
 
-            <div className="font-bold">
+            <div className="font-black text-lg uppercase">
               {selectedSlot
                 ? `${formatTime(selectedSlot.start_time)} → ${formatTime(endTime)}`
-                : "No slot selected"}
+                : "Awaiting Input"}
             </div>
           </div>
         </div>

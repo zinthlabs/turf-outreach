@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 const SiteContext = createContext();
 
@@ -12,14 +11,13 @@ export const useSiteContext = () => {
 };
 
 export const SiteProvider = ({ children }) => {
-    const location = useLocation();
     const [siteName, setSiteName] = useState(() => {
         // Try to get from localStorage first
         const stored = localStorage.getItem("siteName");
         if (stored) return stored;
 
         // Otherwise use default
-        return "Strikers Yard";
+        return "IRON HAVEN";
     });
 
     useEffect(() => {
