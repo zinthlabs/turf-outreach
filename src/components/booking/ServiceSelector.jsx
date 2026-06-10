@@ -1,26 +1,25 @@
-import { Stethoscope, Sparkles, Activity, ShieldCheck } from "lucide-react";
+import { Stethoscope, Sparkles, Activity, ShieldCheck, HeartPulse } from "lucide-react";
 
 export default function ServiceSelector({ sports, selectedSport, onSelectSport }) {
 
   // Map each service to an icon
   const getIcon = (name) => {
     const service = name.toLowerCase();
-    if (service.includes("checkup") || service.includes("consultation")) return <Stethoscope />;
-    if (service.includes("whitening") || service.includes("aesthetic")) return <Sparkles />;
-    if (service.includes("root canal") || service.includes("surgery")) return <Activity />;
-    return <ShieldCheck />; // fallback
+    if (service.includes("checkup") || service.includes("consultation")) return <Stethoscope size={24} />;
+    if (service.includes("whitening") || service.includes("aesthetic")) return <Sparkles size={24} />;
+    if (service.includes("root canal") || service.includes("surgery")) return <Activity size={24} />;
+    if (service.includes("cleaning") || service.includes("hygiene")) return <HeartPulse size={24} />;
+    return <ShieldCheck size={24} />; // fallback
   };
 
   return (
-    <div
-      className="card-dental"
-    >
-      <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
-        <div className="w-1.5 h-6 bg-sky-500 rounded-full" />
-        Select Service
+    <div className="p-8">
+      <h2 className="text-2xl font-black text-slate-900 mb-8 flex items-center gap-3">
+        <div className="w-2 h-8 bg-sky-600 rounded-full shadow-lg shadow-sky-200" />
+        Choose Your Treatment
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {sports.map((sport) => {
           const isSelected = selectedSport === sport.name.toLowerCase();
 
@@ -29,42 +28,48 @@ export default function ServiceSelector({ sports, selectedSport, onSelectSport }
               key={sport.id}
               onClick={() => onSelectSport(sport.name.toLowerCase())}
               className={`
-                relative
-                p-4 rounded-xl
-                transition-all duration-300
-                flex items-center gap-4
+                group relative
+                p-6 rounded-2xl
+                transition-all duration-500
+                flex items-start gap-5
                 text-left
-                border
+                border-2
                 ${
                   isSelected
-                    ? 'bg-sky-50 border-sky-300 ring-1 ring-sky-300 shadow-sm'
-                    : 'bg-white border-slate-100 hover:border-sky-200 hover:bg-slate-50'
+                    ? 'bg-sky-600 border-sky-600 shadow-xl shadow-sky-200 -translate-y-1'
+                    : 'bg-white border-slate-100 hover:border-sky-200 hover:shadow-lg hover:-translate-y-1'
                 }
               `}
             >
-              {/* Icon */}
+              {/* Icon Container */}
               <div
                 className={`
-                  p-3 rounded-lg transition-all duration-300
-                  ${isSelected ? 'bg-sky-600 text-white' : 'bg-sky-50 text-sky-600'}
+                  p-4 rounded-xl transition-all duration-500
+                  ${isSelected ? 'bg-white/20 text-white scale-110' : 'bg-sky-50 text-sky-600 group-hover:scale-110'}
                 `}
               >
                 {getIcon(sport.name)}
               </div>
 
-              {/* Service Name */}
-              <div className="flex flex-col">
+              {/* Text Container */}
+              <div className="flex flex-col pt-1">
                 <span
                   className={`
-                    font-bold transition-all duration-300
-                    ${isSelected ? 'text-sky-900' : 'text-slate-700'}
+                    text-lg font-black transition-all duration-500 leading-tight
+                    ${isSelected ? 'text-white' : 'text-slate-800'}
                   `}
                 >
                   {sport.name}
                 </span>
-                <span className="text-xs text-slate-400">Professional Care</span>
+                <span className={`text-xs font-bold uppercase tracking-widest mt-1.5 transition-all duration-500 ${isSelected ? 'text-sky-200' : 'text-slate-400'}`}>
+                   Premium Dental Care
+                </span>
               </div>
 
+              {/* Selection Indicator */}
+              {isSelected && (
+                <div className="absolute top-4 right-4 w-2 h-2 bg-white rounded-full animate-pulse" />
+              )}
             </button>
           );
         })}

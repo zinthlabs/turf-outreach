@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Stethoscope } from 'lucide-react';
+import { Stethoscope, ShieldCheck, Star, Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { useSports } from '../hooks/UseSports';
 import { fetchSlots, createBooking, verifyPayment } from '../services/api';
 import ServiceSelector from '../components/booking/ServiceSelector';
@@ -54,7 +54,8 @@ export default function AppointmentBooking() {
   const [login, setLogin] = useState(isLoggedIn());
 
   const turfs = [
-    { id: 'dental-room-1', name: 'Dental Room 1' },
+    { id: 'dental-room-1', name: 'Premium Dental Suite 1' },
+    { id: 'dental-room-2', name: 'Premium Dental Suite 2' },
   ];
 
   const bookingFee = 2000;
@@ -303,54 +304,79 @@ export default function AppointmentBooking() {
      UI STARTS HERE
   --------------------------*/
   return (
-    <div className="min-h-screen bg-slate-50 font-sans pt-32 pb-20">
+    <div className="min-h-screen bg-slate-50 font-sans">
 
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="mb-10">
-          <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Book Your Appointment</h1>
-          <p className="text-slate-500">Select your preferred service and schedule a visit to our studio.</p>
+      {/* Premium Hero Banner */}
+      <div className="relative h-[400px] w-full flex items-center justify-center overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1629909605125-58da16ffaf91?q=80&w=2000&auto=format&fit=crop"
+          alt="Dental Clinic"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-sky-900/40 backdrop-blur-[2px]" />
+
+        <div className="relative z-10 text-center px-6 max-w-4xl pt-20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 border border-sky-400/30 text-white text-xs font-bold uppercase tracking-wider mb-6">
+            <ShieldCheck size={14} className="text-sky-300" />
+            Certified Dental Excellence
+          </div>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
+            Schedule Your <span className="text-sky-300">New Smile</span>
+          </h1>
+          <p className="text-lg text-sky-50 max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+            Experience premium dental care in a state-of-the-art environment. Your journey to perfect oral health begins here.
+          </p>
         </div>
+      </div>
 
+      <div className="max-w-6xl mx-auto px-6 -mt-20 relative z-20 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* LEFT COLUMN */}
           <div className="lg:col-span-7 space-y-8">
-            <ServiceSelector
-              sports={sports}
-              selectedSport={selectedSport}
-              onSelectSport={setSelectedSport}
-            />
+            <div className="bg-white rounded-[32px] shadow-xl shadow-sky-900/5 border border-slate-100 overflow-hidden">
+               <ServiceSelector
+                sports={sports}
+                selectedSport={selectedSport}
+                onSelectSport={setSelectedSport}
+              />
+            </div>
 
-            <Calendar
-              currentMonth={currentMonth}
-              goToPreviousMonth={goToPreviousMonth}
-              goToNextMonth={goToNextMonth}
-              isPreviousMonthDisabled={isPreviousMonthDisabled}
-              days={days}
-              weekDays={weekDays}
-              months={monthsLong}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              isDateDisabled={isDateDisabled}
-              isSameDay={isSameDay}
-              today={today}
-              formatSelectedDate={formatSelectedDate}
-            />
+            <div className="bg-white rounded-[32px] shadow-xl shadow-sky-900/5 border border-slate-100 overflow-hidden">
+              <Calendar
+                currentMonth={currentMonth}
+                goToPreviousMonth={goToPreviousMonth}
+                goToNextMonth={goToNextMonth}
+                isPreviousMonthDisabled={isPreviousMonthDisabled}
+                days={days}
+                weekDays={weekDays}
+                months={monthsLong}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                isDateDisabled={isDateDisabled}
+                isSameDay={isSameDay}
+                today={today}
+                formatSelectedDate={formatSelectedDate}
+              />
+            </div>
           </div>
 
           {/* RIGHT COLUMN */}
           <div className="lg:col-span-5 space-y-8">
 
             {/* SLOT SELECTOR */}
-            <div className="card-dental">
+            <div className="card-dental bg-white shadow-xl shadow-sky-900/5">
               <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
                 <div className="w-1.5 h-6 bg-sky-500 rounded-full" />
-                Available Slots
+                Select a Time
               </h2>
 
               <div className="grid grid-cols-2 gap-3">
                 {availableSlots.length === 0 ? (
-                  <p className="text-slate-400 text-sm">No slots available for this date.</p>
+                  <div className="col-span-2 py-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                    <Clock size={32} className="mx-auto text-slate-300 mb-2" />
+                    <p className="text-slate-400 text-sm">No available slots for this date.</p>
+                  </div>
                 ) : (
                   availableSlots
                     .filter(slot => !isPastSlot(slot))
@@ -368,12 +394,12 @@ export default function AppointmentBooking() {
                             if (duration > max) setDuration(1);
                           }}
                           className={`
-                            relative p-3 rounded-xl text-sm font-bold transition-all duration-300
+                            relative p-3.5 rounded-xl text-sm font-bold transition-all duration-300
                             border
                             ${slot.is_taken
-                              ? 'bg-slate-50 text-slate-300 border-slate-50 cursor-not-allowed'
+                              ? 'bg-slate-50 text-slate-300 border-slate-50 cursor-not-allowed opacity-60'
                               : isSelected
-                                ? 'bg-sky-600 text-white border-sky-600 shadow-md scale-105'
+                                ? 'bg-sky-600 text-white border-sky-600 shadow-lg shadow-sky-200 scale-105'
                                 : 'bg-white text-slate-700 border-slate-100 hover:border-sky-200 hover:bg-sky-50'
                             }
                           `}
@@ -387,48 +413,66 @@ export default function AppointmentBooking() {
             </div>
 
             {/* DURATION SELECTOR */}
-            <DurationSelector
-              duration={duration}
-              setDuration={setDuration}
-              getMaxDuration={getMaxDuration}
-              selectedSlot={selectedSlot}
-            />
+            <div className="bg-white rounded-[32px] shadow-xl shadow-sky-900/5 border border-slate-100 overflow-hidden">
+              <DurationSelector
+                duration={duration}
+                setDuration={setDuration}
+                getMaxDuration={getMaxDuration}
+                selectedSlot={selectedSlot}
+              />
+            </div>
 
-            {/* TURF SELECTOR */}
-            <TurfSelector
-              turfs={turfs}
-              selectedTurf={selectedTurf}
-              setSelectedTurf={setSelectedTurf}
-            />
+            {/* CLINIC SELECTOR */}
+            <div className="bg-white rounded-[32px] shadow-xl shadow-sky-900/5 border border-slate-100 overflow-hidden">
+              <TurfSelector
+                turfs={turfs}
+                selectedTurf={selectedTurf}
+                setSelectedTurf={setSelectedTurf}
+              />
+            </div>
 
             {/* BOOKING SUMMARY */}
-            <BookingSummary
-              selectedSportObj={sports.find(s => s.name.toLowerCase() === selectedSport)}
-              convenienceFee={convenienceFee}
-              total={total}
-              selectedSlot={availableSlots.find(s => s.id === selectedSlot)}
-              duration={duration}
-            />
+            <div className="bg-white rounded-[32px] shadow-xl shadow-sky-900/5 border border-slate-100 overflow-hidden">
+              <BookingSummary
+                selectedSportObj={sports.find(s => s.name.toLowerCase() === selectedSport)}
+                convenienceFee={convenienceFee}
+                total={total}
+                selectedSlot={availableSlots.find(s => s.id === selectedSlot)}
+                duration={duration}
+              />
+            </div>
 
             {/* ACTION BUTTONS */}
-            <div className="space-y-4">
+            <div className="space-y-4 pt-4">
               {login ? (
                 <>
                   <button
                     onClick={() => handleBooking(false)}
                     disabled={isProcessingPayment}
                     className="
-                      w-full btn-primary text-lg py-5
+                      w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-5 rounded-2xl shadow-xl shadow-sky-200
+                      transition-all duration-300 active:scale-95 flex items-center justify-center gap-3
                     "
                   >
-                    {isProcessingPayment ? 'Processing...' : 'CONFIRM APPOINTMENT'}
+                    {isProcessingPayment ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck size={20} />
+                        CONFIRM APPOINTMENT
+                      </>
+                    )}
                   </button>
 
                   <button
                     onClick={() => handleBooking(true)}
                     disabled={isProcessingPayment}
                     className="
-                      w-full btn-secondary text-lg py-5
+                      w-full bg-white hover:bg-sky-50 text-sky-600 font-bold py-5 rounded-2xl border border-sky-100
+                      transition-all duration-300 active:scale-95
                     "
                   >
                     {isProcessingPayment ? 'Processing...' : 'PARTIAL PRE-PAYMENT'}
@@ -439,12 +483,24 @@ export default function AppointmentBooking() {
                   onClick={() => setOverlay(true)}
                   disabled={isProcessingPayment}
                   className="
-                    w-full btn-primary text-lg py-5
+                    w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-5 rounded-2xl shadow-xl shadow-sky-200
+                    transition-all duration-300
                   "
                 >
                   Login to Continue
                 </button>
               )}
+
+              <div className="flex items-center justify-center gap-6 py-4 opacity-50 grayscale">
+                <div className="flex items-center gap-1">
+                  <Star size={14} className="text-amber-400 fill-amber-400" />
+                  <span className="text-xs font-bold">4.9 Rating</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <ShieldCheck size={14} className="text-sky-600" />
+                  <span className="text-xs font-bold">Safe & Secure</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -453,16 +509,28 @@ export default function AppointmentBooking() {
       {/* OTP MODAL */}
       {overlay && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/60 backdrop-blur-md"
         >
-          <PhoneOTPComponent
-            onSuccess={() => {
-              setLogin(true);
-              setOverlay(false);
-            }}
-          />
+          <div className="animate-scaleIn">
+             <PhoneOTPComponent
+              onSuccess={() => {
+                setLogin(true);
+                setOverlay(false);
+              }}
+            />
+          </div>
         </div>
       )}
+
+      <style>{`
+        @keyframes scaleIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        .animate-scaleIn {
+          animation: scaleIn 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
