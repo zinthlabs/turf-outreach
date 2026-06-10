@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, Stethoscope } from "lucide-react";
 import { isLoggedIn } from "../services/is_logged_in";
 import { useSiteContext } from "../contexts/SiteContext";
 
@@ -25,41 +25,43 @@ export default function Navbar({ openLogin }) {
   };
 
   return (
-    <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[90vw] max-w-5xl z-40">
+    <div className="fixed top-0 left-0 w-full z-50 px-4 py-4">
       <nav className="
-          flex items-center justify-between px-6 py-5 
-          rounded-2xl shadow-xl backdrop-blur-xl 
-          bg-gray-950/20 border border-white/15
-          text-white
+          max-w-6xl mx-auto flex items-center justify-between px-6 py-4
+          rounded-2xl shadow-lg backdrop-blur-md
+          bg-white/80 border border-sky-100
+          text-slate-800
         "
       >
         {/* LOGO */}
         <Link
           to="/"
-          className="text-3xl font-bold tracking-tight font-[Montserrat] "
+          className="flex items-center gap-2 text-2xl font-extrabold tracking-tight text-sky-700"
         >
-          {siteName || "Strikers Yard"}
+          <Stethoscope className="text-sky-500" />
+          <span className="hidden sm:inline">{siteName}</span>
+          <span className="sm:hidden">Cuspids</span>
         </Link>
 
         {/* DESKTOP MENU */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           <Link
             to="/"
-            className="font-semibold px-4 py-1 rounded-xl transition hover:bg-white/10 hover:text-emerald-300"
+            className="font-medium px-3 py-1 rounded-lg transition hover:text-sky-600"
           >
             Home
           </Link>
           <Link
             to="/booking"
-            className="font-semibold px-4 py-1 rounded-xl transition hover:bg-white/10 hover:text-emerald-300"
+            className="font-medium px-3 py-1 rounded-lg transition hover:text-sky-600"
           >
-            Book Turf
+            Book Appointment
           </Link>
           <Link
             to="/my-bookings"
-            className="font-semibold px-4 py-1 rounded-xl transition hover:bg-white/10 hover:text-emerald-300"
+            className="font-medium px-3 py-1 rounded-lg transition hover:text-sky-600"
           >
-            My Bookings
+            My Appointments
           </Link>
         </div>
 
@@ -69,10 +71,9 @@ export default function Navbar({ openLogin }) {
             <button
               onClick={openLogin}
               className="
-                font-bold px-7 py-2 rounded-full transition 
-                border-2 border-emerald-400 
-                hover:bg-emerald-400 hover:text-black
-                hover:shadow-md
+                font-bold px-6 py-2 rounded-full transition
+                bg-sky-600 text-white
+                hover:bg-sky-700 hover:shadow-md
               "
             >
               Login
@@ -81,15 +82,16 @@ export default function Navbar({ openLogin }) {
             <>
               <Link
                 to="/profile"
-                className="font-semibold px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-emerald-300"
+                className="font-semibold px-4 py-2 rounded-full transition hover:bg-sky-50 text-sky-700"
               >
                 {user?.name || "User"}
               </Link>
               <button
                 onClick={logout}
-                className="p-2 rounded-full hover:bg-white/10 text-emerald-300"
+                className="p-2 rounded-full hover:bg-red-50 text-red-500 transition-colors"
+                title="Logout"
               >
-                <LogOut size={24} />
+                <LogOut size={20} />
               </button>
             </>
           )}
@@ -97,7 +99,7 @@ export default function Navbar({ openLogin }) {
 
         {/* MOBILE MENU BUTTON */}
         <button
-          className="md:hidden text-white p-2"
+          className="md:hidden text-slate-600 p-2"
           onClick={() => setOpen(!open)}
         >
           {open ? <X size={28} /> : <Menu size={28} />}
@@ -108,34 +110,33 @@ export default function Navbar({ openLogin }) {
       {open && (
         <div
           className="
-            md:hidden mt-3 p-6 rounded-2xl backdrop-blur-xl 
-            bg-gray-950/40 border border-white/10 shadow-xl 
-            flex flex-col gap-4 text-white
+            md:hidden mt-2 p-4 rounded-2xl backdrop-blur-xl
+            bg-white/95 border border-sky-100 shadow-xl
+            flex flex-col gap-2 text-slate-800
           "
         >
           <Link
             to="/"
             onClick={() => setOpen(false)}
-            className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+            className="font-semibold py-3 px-4 rounded-xl hover:bg-sky-50 hover:text-sky-700"
           >
             Home
           </Link>
           <Link
             to="/booking"
             onClick={() => setOpen(false)}
-            className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+            className="font-semibold py-3 px-4 rounded-xl hover:bg-sky-50 hover:text-sky-700"
           >
-            Book Turf
+            Book Appointment
           </Link>
           <Link
             to="/my-bookings"
             onClick={() => setOpen(false)}
-            className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+            className="font-semibold py-3 px-4 rounded-xl hover:bg-sky-50 hover:text-sky-700"
           >
-            My Bookings
+            My Appointments
           </Link>
 
-          {/* LOGIN / LOGOUT MOBILE */}
           {!loggedIn ? (
             <button
               onClick={() => {
@@ -143,9 +144,8 @@ export default function Navbar({ openLogin }) {
                 openLogin();
               }}
               className="
-                w-full font-bold py-3 rounded-xl border-2 
-                border-emerald-400 hover:bg-emerald-400 
-                hover:text-black transition
+                w-full font-bold py-3 rounded-xl
+                bg-sky-600 text-white mt-2
               "
             >
               Login
@@ -155,13 +155,13 @@ export default function Navbar({ openLogin }) {
               <Link
                 to="/profile"
                 onClick={() => setOpen(false)}
-                className="font-semibold py-2 rounded-xl hover:bg-white/10 hover:text-emerald-300"
+                className="font-semibold py-3 px-4 rounded-xl hover:bg-sky-50 hover:text-sky-700"
               >
-                {user?.name || "User"}
+                Profile ({user?.name || "User"})
               </Link>
               <button
                 onClick={logout}
-                className="w-full font-semibold py-3 rounded-xl hover:bg-white/10 text-emerald-300"
+                className="w-full font-semibold py-3 rounded-xl bg-red-50 text-red-600"
               >
                 Logout
               </button>

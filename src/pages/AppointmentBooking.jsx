@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check } from 'lucide-react';
+import { Stethoscope } from 'lucide-react';
 import { useSports } from '../hooks/UseSports';
 import { fetchSlots, createBooking, verifyPayment } from '../services/api';
-import SportSelector from '../components/booking/SportSelector';
+import ServiceSelector from '../components/booking/ServiceSelector';
 import Calendar from '../components/booking/Calendar';
 import DurationSelector from '../components/booking/DurationSelector';
 import TurfSelector from '../components/booking/TurfSelector';
@@ -25,7 +25,7 @@ const loadRazorpayScript = () => {
     if (existingScript) {
       resolve(true);
       return;
-    } // <-- FIXED missing closing brace
+    }
 
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
@@ -36,11 +36,8 @@ const loadRazorpayScript = () => {
 };
 
 
-export default function SportsBooking() {
+export default function AppointmentBooking() {
 
-  /* --------------------------
-      FIXED: useNavigate HERE
-  ---------------------------*/
   const navigate = useNavigate();
 
   const today = new Date();
@@ -57,7 +54,7 @@ export default function SportsBooking() {
   const [login, setLogin] = useState(isLoggedIn());
 
   const turfs = [
-    { id: '7-a-side-turf-c', name: '7 a side Turf C' },
+    { id: 'dental-room-1', name: 'Dental Room 1' },
   ];
 
   const bookingFee = 2000;
@@ -131,7 +128,7 @@ export default function SportsBooking() {
   }, []);
 
   /* -------------------------
-     AUTO-SELECT DEFAULT SPORT
+     AUTO-SELECT DEFAULT SERVICE
   --------------------------*/
   useEffect(() => {
     if (!selectedSport && sports.length > 0) {
@@ -199,7 +196,7 @@ export default function SportsBooking() {
   --------------------------*/
   const handleBooking = async (partial = false) => {
     if (!selectedSport || !selectedSlot || !selectedDate) {
-      toast.error("Please select sport, slot, and date before proceeding.");
+      toast.error("Please select service, slot, and date before proceeding.");
       return;
     }
 
@@ -233,7 +230,7 @@ export default function SportsBooking() {
         key: razorpay_key_id,
         amount,
         currency: "INR",
-        name: "Strikers Yard",
+        name: "Cuspids Dental Studio",
         order_id: razorpay_order_id,
         prefill: {
           name: storedUser?.name,
@@ -246,12 +243,12 @@ export default function SportsBooking() {
             razorpay_signature: response.razorpay_signature,
             is_partial_payment: partial,
           });
-          toast.success("Payment verified!");
+          toast.success("Appointment Confirmed!");
           setTimeout(() => navigate("/my-bookings"), 200);
         },
         modal: {
           ondismiss: () => {
-            toast.error("Payment cancelled. If the transaction failed, the selected slot will be released in approximately 12 minutes.", {
+            toast.error("Process cancelled. If payment failed, the slot will be released shortly.", {
               duration: 6000,
             });
             setIsProcessingPayment(false);
@@ -262,7 +259,7 @@ export default function SportsBooking() {
       const rzp = new window.Razorpay(options);
 
       rzp.on('payment.failed', function (response) {
-        toast.error("Payment failed. If the transaction failed, the selected slot will be released in approximately 12 minutes.", {
+        toast.error("Payment failed. Please try again.", {
           duration: 6000,
         });
         setIsProcessingPayment(false);
@@ -270,7 +267,7 @@ export default function SportsBooking() {
 
       rzp.open();
     } catch (error) {
-      toast.error("Failed to initiate booking. If the slot is temporarily locked because of payment failure, please try again later.", {
+      toast.error("Failed to initiate booking. Please try again later.", {
         duration: 6000,
       });
     } finally {
@@ -306,174 +303,149 @@ export default function SportsBooking() {
      UI STARTS HERE
   --------------------------*/
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden font-[Montserrat] pt-32">
+    <div className="min-h-screen bg-slate-50 font-sans pt-32 pb-20">
 
-      {/* BLURRED BACKGROUND */}
-      <div
-        className="absolute inset-0 -z-20 filter blur-[2px]"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1744565473172-a3c64b1e1bbb?q=80&w=1051&auto=format&fit=crop')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center top'
-        }}
-      />
-
-      {/* DIM LAYER */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm -z-10" />
-
-      <div className="max-w-7xl mx-auto p-6 lg:flex lg:gap-6">
-
-        {/* LEFT COLUMN */}
-        <div className="lg:flex-1 space-y-6">
-          <SportSelector
-            sports={sports}
-            selectedSport={selectedSport}
-            onSelectSport={setSelectedSport}
-          />
-
-          <Calendar
-            currentMonth={currentMonth}
-            goToPreviousMonth={goToPreviousMonth}
-            goToNextMonth={goToNextMonth}
-            isPreviousMonthDisabled={isPreviousMonthDisabled}
-            days={days}
-            weekDays={weekDays}
-            months={monthsLong}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            isDateDisabled={isDateDisabled}
-            isSameDay={isSameDay}
-            today={today}
-            formatSelectedDate={formatSelectedDate}
-          />
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="mb-10">
+          <h1 className="text-4xl font-extrabold text-slate-900 mb-2">Book Your Appointment</h1>
+          <p className="text-slate-500">Select your preferred service and schedule a visit to our studio.</p>
         </div>
 
-        {/* RIGHT COLUMN */}
-        <div className="lg:flex-1 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-          {/* SLOT SELECTOR */}
-          <div className="
-            rounded-3xl backdrop-blur-3xl bg-gray-950/10 
-            border border-white/15 shadow-[0_24px_80px_rgba(0,0,0,0.55)]
-            p-7
-          ">
-            <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
-              <div className="w-1.5 h-8 bg-gradient-to-b from-emerald-300 to-lime-300 rounded-full" />
-              Select Slot
-            </h2>
+          {/* LEFT COLUMN */}
+          <div className="lg:col-span-7 space-y-8">
+            <ServiceSelector
+              sports={sports}
+              selectedSport={selectedSport}
+              onSelectSport={setSelectedSport}
+            />
 
-            <div className="grid grid-cols-2 gap-3">
-              {availableSlots.length === 0 ? (
-                <p className="text-emerald-100/70">No slots available.</p>
-              ) : (
-                availableSlots
-                  .filter(slot => !isPastSlot(slot))
-                  .map((slot) => {
-                    const slotText = `${formatTime(slot.start_time)} - ${formatTime(slot.end_time)}`;
-                    const isSelected = selectedSlot === slot.id;
-
-                    return (
-                      <button
-                        key={slot.id}
-                        disabled={slot.is_taken}
-                        onClick={() => {
-                          const max = getMaxDuration(slot.id);
-                          setSelectedSlot(slot.id);
-                          if (duration > max) setDuration(1);
-                        }}
-                        className={`
-                          relative p-4 rounded-xl text-sm font-semibold transition-all duration-300
-                          ${slot.is_taken
-                            ? 'bg-white/5 text-emerald-200/40 cursor-not-allowed'
-                            : isSelected
-                              ? 'bg-gradient-to-br from-emerald-400 to-lime-300 text-emerald-900 shadow-lg scale-110'
-                              : 'bg-white/5 text-emerald-50 hover:bg-white/15 hover:scale-105 hover:shadow-md'
-                          }
-                        `}
-                      >
-                        {slotText}
-                      </button>
-                    );
-                  })
-              )}
-            </div>
+            <Calendar
+              currentMonth={currentMonth}
+              goToPreviousMonth={goToPreviousMonth}
+              goToNextMonth={goToNextMonth}
+              isPreviousMonthDisabled={isPreviousMonthDisabled}
+              days={days}
+              weekDays={weekDays}
+              months={monthsLong}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              isDateDisabled={isDateDisabled}
+              isSameDay={isSameDay}
+              today={today}
+              formatSelectedDate={formatSelectedDate}
+            />
           </div>
 
-          {/* DURATION SELECTOR */}
-          <DurationSelector
-            duration={duration}
-            setDuration={setDuration}
-            getMaxDuration={getMaxDuration}
-            selectedSlot={selectedSlot}
-          />
+          {/* RIGHT COLUMN */}
+          <div className="lg:col-span-5 space-y-8">
 
-          {/* TURF SELECTOR */}
-          <TurfSelector
-            turfs={turfs}
-            selectedTurf={selectedTurf}
-            setSelectedTurf={setSelectedTurf}
-          />
+            {/* SLOT SELECTOR */}
+            <div className="card-dental">
+              <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                <div className="w-1.5 h-6 bg-sky-500 rounded-full" />
+                Available Slots
+              </h2>
 
-          {/* BOOKING SUMMARY */}
-          <BookingSummary
-            selectedSportObj={sports.find(s => s.name.toLowerCase() === selectedSport)}
-            convenienceFee={convenienceFee}
-            total={total}
-            selectedSlot={availableSlots.find(s => s.id === selectedSlot)}
-            duration={duration}
-          />
+              <div className="grid grid-cols-2 gap-3">
+                {availableSlots.length === 0 ? (
+                  <p className="text-slate-400 text-sm">No slots available for this date.</p>
+                ) : (
+                  availableSlots
+                    .filter(slot => !isPastSlot(slot))
+                    .map((slot) => {
+                      const slotText = `${formatTime(slot.start_time)}`;
+                      const isSelected = selectedSlot === slot.id;
 
-          {/* ACTION BUTTONS */}
-          <div className="
-            rounded-3xl backdrop-blur-3xl bg-gray-950/10 
-            border border-white/15 shadow-[0_24px_80px_rgba(0,0,0,0.55)]
-            p-7 space-y-4
-          ">
-            {login ? (
-              <>
+                      return (
+                        <button
+                          key={slot.id}
+                          disabled={slot.is_taken}
+                          onClick={() => {
+                            const max = getMaxDuration(slot.id);
+                            setSelectedSlot(slot.id);
+                            if (duration > max) setDuration(1);
+                          }}
+                          className={`
+                            relative p-3 rounded-xl text-sm font-bold transition-all duration-300
+                            border
+                            ${slot.is_taken
+                              ? 'bg-slate-50 text-slate-300 border-slate-50 cursor-not-allowed'
+                              : isSelected
+                                ? 'bg-sky-600 text-white border-sky-600 shadow-md scale-105'
+                                : 'bg-white text-slate-700 border-slate-100 hover:border-sky-200 hover:bg-sky-50'
+                            }
+                          `}
+                        >
+                          {slotText}
+                        </button>
+                      );
+                    })
+                )}
+              </div>
+            </div>
+
+            {/* DURATION SELECTOR */}
+            <DurationSelector
+              duration={duration}
+              setDuration={setDuration}
+              getMaxDuration={getMaxDuration}
+              selectedSlot={selectedSlot}
+            />
+
+            {/* TURF SELECTOR */}
+            <TurfSelector
+              turfs={turfs}
+              selectedTurf={selectedTurf}
+              setSelectedTurf={setSelectedTurf}
+            />
+
+            {/* BOOKING SUMMARY */}
+            <BookingSummary
+              selectedSportObj={sports.find(s => s.name.toLowerCase() === selectedSport)}
+              convenienceFee={convenienceFee}
+              total={total}
+              selectedSlot={availableSlots.find(s => s.id === selectedSlot)}
+              duration={duration}
+            />
+
+            {/* ACTION BUTTONS */}
+            <div className="space-y-4">
+              {login ? (
+                <>
+                  <button
+                    onClick={() => handleBooking(false)}
+                    disabled={isProcessingPayment}
+                    className="
+                      w-full btn-primary text-lg py-5
+                    "
+                  >
+                    {isProcessingPayment ? 'Processing...' : 'CONFIRM APPOINTMENT'}
+                  </button>
+
+                  <button
+                    onClick={() => handleBooking(true)}
+                    disabled={isProcessingPayment}
+                    className="
+                      w-full btn-secondary text-lg py-5
+                    "
+                  >
+                    {isProcessingPayment ? 'Processing...' : 'PARTIAL PRE-PAYMENT'}
+                  </button>
+                </>
+              ) : (
                 <button
-                  onClick={() => handleBooking(false)}
+                  onClick={() => setOverlay(true)}
                   disabled={isProcessingPayment}
                   className="
-                    w-full bg-gradient-to-r from-emerald-400 to-lime-300
-                    text-emerald-900 font-bold py-5 rounded-2xl shadow-xl
-                    transition-all duration-300 hover:shadow-2xl hover:scale-105 
-                    active:scale-95
-                    disabled:opacity-50 disabled:cursor-not-allowed
+                    w-full btn-primary text-lg py-5
                   "
                 >
-                  {isProcessingPayment ? 'Processing...' : 'PROCEED TO PAY'}
+                  Login to Continue
                 </button>
-
-                <button
-                  onClick={() => handleBooking(true)}
-                  disabled={isProcessingPayment}
-                  className="
-                    w-full bg-gradient-to-r from-amber-500 to-orange-400
-                    text-white font-bold py-5 rounded-2xl shadow-xl
-                    transition-all duration-300 hover:shadow-2xl hover:scale-105 
-                    active:scale-95
-                    disabled:opacity-50 disabled:cursor-not-allowed
-                  "
-                >
-                  {isProcessingPayment ? 'Processing...' : 'PAY PARTIAL'}
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => setOverlay(true)}
-                disabled={isProcessingPayment}
-                className="
-                  w-full bg-gradient-to-r from-emerald-400 to-lime-300
-                  text-emerald-900 font-bold py-5 rounded-2xl shadow-xl
-                  transition-all duration-300 hover:shadow-2xl hover:scale-105 
-                  active:scale-95
-                "
-              >
-                Login to Continue
-              </button>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -481,8 +453,7 @@ export default function SportsBooking() {
       {/* OTP MODAL */}
       {overlay && (
         <div
-          className="fixed inset-0 z-[70] flex items-center justify-center"
-          style={{ backdropFilter: 'blur(2px)' }}
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm"
         >
           <PhoneOTPComponent
             onSuccess={() => {

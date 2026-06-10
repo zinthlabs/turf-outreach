@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import SportsBooking from "./pages/SportsBooking";
-import MyBookings from "./pages/MyBooking";
+import AppointmentBooking from "./pages/AppointmentBooking";
+import MyAppointments from "./pages/MyAppointments";
 import Profile from "./pages/Profile";
 import LoginModal from "./components/LoginModal";
 import { isLoggedIn } from "./services/is_logged_in";
@@ -46,28 +46,30 @@ export default function App() {
       />
       <Navbar openLogin={() => openLogin()} />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/booking" element={<SportsBooking />} />
+      <main className="min-h-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/booking" element={<AppointmentBooking />} />
 
-        <Route
-          path="/my-bookings"
-          element={
-            <ProtectedRoute loggedIn={loggedIn} openLogin={openLogin}>
-              <MyBookings />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/my-bookings"
+            element={
+              <ProtectedRoute loggedIn={loggedIn} openLogin={openLogin}>
+                <MyAppointments />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute loggedIn={loggedIn} openLogin={openLogin}>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute loggedIn={loggedIn} openLogin={openLogin}>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </main>
 
       {showLogin && (
         <LoginModal

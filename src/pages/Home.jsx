@@ -1,101 +1,144 @@
 import { useNavigate } from 'react-router-dom';
-import { AiOutlineArrowRight } from 'react-icons/ai';
-import { useEffect, useState } from 'react';
-import { Facebook, Instagram, MessageCircle } from "lucide-react";
-
-
-const images = [
-  "https://images.unsplash.com/photo-1744565473172-a3c64b1e1bbb?q=80&w=1051&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1725972006441-6fd5ec6d6ef3?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1603477213680-b562a3445e10?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1501127152955-b1efb91ef012?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-];
+import { ChevronRight, ShieldCheck, Clock, Award } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-black font-[Montserrat]">
-      {/* Hero background carousel */}
-      <div className="absolute inset-0 w-full h-full">
-        <img
-          src={images[current]}
-          alt="Turf background"
-          className="w-full h-full object-cover object-center"
-          style={{ maxHeight: '100vh' }}
-        />
-        <div className="absolute inset-0 bg-linear-to-tr from-black/20 via-green-800/20 to-blue-900/40 backdrop-blur-sm" />
-      </div>
-      {/* Main glass hero and call-to-action, center both axes */}
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center z-20">
-        <h1 className="text-white text-5xl font-black mb-6 text-center drop-shadow-xl">
-          BRING YOUR GAME ON!
-        </h1>
-        <div className="text-white text-lg mb-6 font-medium text-center" style={{ textShadow: "0 2px 8px rgba(50,205,50,0.13)" }}>
-          Book football turfs easily & instantly. <br />
-          Discover local grounds and reserve your spot.
-        </div>
-        <button
-          className="mt-2 bg-green-400 hover:bg-green-300 text-black font-bold px-8 py-4 rounded-full shadow-xl transition transform hover:-translate-y-1"
-          onClick={() => navigate('/booking')}
-        >
-          <AiOutlineArrowRight className="text-2xl inline-block mr-2 align-middle" />
-          Book Now
-        </button>
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-sky-50 rounded-l-[100px] -z-10 hidden lg:block" />
 
-      </div>
-      {/* Carousel dots with glass effect */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            className={`w-4 h-4 rounded-full border-2 ${current === idx ? 'bg-green-400 border-white' : 'bg-white/20 border-green-300'} shadow-lg backdrop-blur-lg transition`}
-            onClick={() => setCurrent(idx)}
-            aria-label={`Go to image ${idx + 1}`}
-          />
-        ))}
-      </div>
-      {/* Glass Footer Overlay */}
-      <div className="absolute bottom-0 left-0 w-full h-20 
-                backdrop-blur-xl bg-black/35 
-                border-t border-white/20 
-                flex items-center justify-center z-40">
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-100 text-sky-700 text-sm font-bold">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+              </span>
+              Now Accepting New Patients
+            </div>
 
-        <div className="flex items-center gap-14 text-white">
+            <h1 className="text-5xl lg:text-7xl font-extrabold text-slate-900 leading-tight">
+              Elevating Your <br />
+              <span className="text-sky-600">Smile Experience</span>
+            </h1>
 
-          {/* Powered by */}
-          <div className="flex items-center gap-3">
-            <span className="opacity-90 text-base">
-              Crafted by <a href="https://www.gratifylabs.in" target="_blank" rel="noopener noreferrer"><span className="text-green-400 font-semibold">Zinth Labs</span> Pvt Ltd</a>
-            </span>
+            <p className="text-xl text-slate-600 max-w-lg leading-relaxed">
+              Premium dental care tailored to your comfort. At Cuspids Dental Studio, we blend artistry with science for a healthier, brighter smile.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => navigate('/booking')}
+                className="btn-primary flex items-center justify-center gap-2"
+              >
+                Book Appointment
+                <ChevronRight size={20} />
+              </button>
+              <button className="btn-secondary">
+                View Services
+              </button>
+            </div>
+
+            <div className="flex items-center gap-6 pt-4">
+              <div className="flex -space-x-3">
+                {[1,2,3,4].map(i => (
+                  <img
+                    key={i}
+                    src={`https://i.pravatar.cc/100?img=${i+10}`}
+                    alt="Patient"
+                    className="w-10 h-10 rounded-full border-2 border-white shadow-sm"
+                  />
+                ))}
+              </div>
+              <div className="text-sm">
+                <p className="font-bold text-slate-900">500+ Happy Patients</p>
+                <div className="flex text-amber-400">★★★★★</div>
+              </div>
+            </div>
           </div>
 
-          {/* Social Icons */}
-          <div className="flex gap-6 text-2xl">
+          <div className="relative">
+            <div className="absolute -top-10 -left-10 w-32 h-32 bg-sky-200/50 rounded-full blur-3xl -z-10" />
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-blue-200/50 rounded-full blur-3xl -z-10" />
 
+            <img
+              src="https://images.unsplash.com/photo-1629909605125-58da16ffaf91?q=80&w=1000&auto=format&fit=crop"
+              alt="Modern Dental Clinic"
+              className="w-full h-[500px] object-cover rounded-[40px] shadow-2xl border-8 border-white"
+            />
 
-            <a href="https://www.instagram.com/zinth.labs/" target="_blank" className="hover:text-green-400 transition">
-              <Instagram size={26} />
-            </a>
+            <div className="absolute bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl border border-sky-50 max-w-xs hidden sm:block">
+              <div className="flex items-center gap-4 mb-2">
+                <div className="p-2 bg-sky-100 rounded-lg text-sky-600">
+                  <Award size={24} />
+                </div>
+                <p className="font-bold text-slate-800">Best Clinic 2024</p>
+              </div>
+              <p className="text-xs text-slate-500 leading-relaxed">Recognized for excellence in aesthetic and restorative dentistry.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <a href="https://wa.me/919186146089" target="_blank" className="hover:text-green-400 transition">
-              <MessageCircle size={26} />
-            </a>
+      {/* Features Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Why Cuspids Dental Studio?</h2>
+            <p className="text-slate-600">We provide a comprehensive range of dental services in a state-of-the-art facility designed for your comfort.</p>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 transition-all hover:border-sky-200 hover:shadow-lg group">
+              <div className="w-12 h-12 bg-sky-100 rounded-2xl flex items-center justify-center text-sky-600 mb-6 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                <ShieldCheck size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Safe & Certified</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Following international sterilization protocols to ensure the highest level of hygiene and safety for our patients.</p>
+            </div>
+
+            <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 transition-all hover:border-sky-200 hover:shadow-lg group">
+              <div className="w-12 h-12 bg-sky-100 rounded-2xl flex items-center justify-center text-sky-600 mb-6 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                <Clock size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Easy Scheduling</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Book your appointments online with ease. No more waiting on hold—choose a time that works best for you.</p>
+            </div>
+
+            <div className="p-8 rounded-3xl bg-slate-50 border border-slate-100 transition-all hover:border-sky-200 hover:shadow-lg group">
+              <div className="w-12 h-12 bg-sky-100 rounded-2xl flex items-center justify-center text-sky-600 mb-6 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                <Award size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Expert Doctors</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">Our team of specialists brings years of experience and a gentle touch to every procedure we perform.</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
+      {/* CTA Section */}
+      <section className="py-20">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="bg-sky-600 rounded-[40px] p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-400/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
 
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-6 relative z-10">Ready for a Brighter Smile?</h2>
+            <p className="text-sky-100 mb-10 text-lg max-w-xl mx-auto relative z-10">
+              Join hundreds of satisfied patients. Book your consultation today and take the first step towards dental wellness.
+            </p>
+            <button
+              onClick={() => navigate('/booking')}
+              className="bg-white text-sky-700 px-10 py-4 rounded-full font-bold text-lg hover:bg-sky-50 transition-all relative z-10"
+            >
+              Book Your Appointment Now
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
-
   );
 }

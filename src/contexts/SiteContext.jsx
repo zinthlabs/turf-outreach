@@ -19,7 +19,7 @@ export const SiteProvider = ({ children }) => {
         if (stored) return stored;
 
         // Otherwise use default
-        return "Strikers Yard";
+        return "Cuspids Dental Studio";
     });
 
     useEffect(() => {
