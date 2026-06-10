@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #0ea5e9;
+  --color-primary-dark: #0284c7;
+  --color-primary-light: #f0f9ff;
+  --color-accent: #38bdf8;
+  --font-sans: 'Inter', sans-serif;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 font-sans;
+}
+
+.dental-gradient {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+.card-dental {
+  @apply bg-white rounded-2xl shadow-sm border border-slate-100 p-6 transition-all hover:shadow-md;
+}
+
+.btn-primary {
+  @apply bg-sky-600 text-white px-6 py-3 rounded-full font-semibold transition-all hover:bg-sky-700 active:scale-95 shadow-md hover:shadow-lg disabled:opacity-50;
+}
+
+.btn-secondary {
+  @apply bg-white text-sky-700 border border-sky-200 px-6 py-3 rounded-full font-semibold transition-all hover:bg-sky-50 active:scale-95;
+}

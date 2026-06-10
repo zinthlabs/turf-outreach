@@ -1,49 +1,72 @@
-import { Facebook, Instagram, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, MessageCircle, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="w-full backdrop-blur-md bg-white/5 text-white py-10 mt-24 border-t border-white/10">
-      <div className="max-w-6xl mx-auto flex flex-col items-center gap-5 px-4">
+    <footer className="w-full bg-white text-slate-600 py-16 mt-24 border-t border-slate-100">
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
 
-        {/* Logo + Powered by */}
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-sm text-gray-300">
-            Built by <span className="text-green-400 font-semibold">Zinth Labs</span> Pvt Ltd
+        {/* Clinic Info */}
+        <div className="space-y-4">
+          <h3 className="text-xl font-bold text-sky-800">Cuspids Dental Studio</h3>
+          <p className="text-sm leading-relaxed">
+            Your smile is our priority. We provide professional dental care with the latest technology in a calm and comfortable environment.
           </p>
-        </div>
-        {/* Social Icons */}
-        <div className="flex gap-6 mt-2">
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition hover:text-green-400 hover:scale-110"
-          >
-            <Facebook size={28} />
-          </a>
-
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition hover:text-green-400 hover:scale-110"
-          >
-            <Instagram size={28} />
-          </a>
-
-          <a
-            href="https://wa.me/919000000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition hover:text-green-400 hover:scale-110"
-          >
-            <MessageCircle size={28} />
-          </a>
+          <div className="flex gap-4 pt-2">
+            <a href="#" className="p-2 rounded-full bg-sky-50 text-sky-600 hover:bg-sky-600 hover:text-white transition-all">
+              <Instagram size={20} />
+            </a>
+            <a href="#" className="p-2 rounded-full bg-sky-50 text-sky-600 hover:bg-sky-600 hover:text-white transition-all">
+              <Facebook size={20} />
+            </a>
+            <a href="#" className="p-2 rounded-full bg-sky-50 text-sky-600 hover:bg-sky-600 hover:text-white transition-all">
+              <MessageCircle size={20} />
+            </a>
+          </div>
         </div>
 
-        {/* Copyright */}
-        <p className="text-xs text-gray-400 mt-4">
-          © {new Date().getFullYear()} Strikers Yard · All Rights Reserved
+        {/* Contact Info */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-slate-800">Contact Us</h3>
+          <ul className="space-y-3 text-sm">
+            <li className="flex items-center gap-3">
+              <Phone size={16} className="text-sky-500" />
+              <span>+91 91861 46089</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <Mail size={16} className="text-sky-500" />
+              <span>hello@cuspidsdental.com</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <MapPin size={16} className="text-sky-500 mt-0.5" />
+              <span>123 Dental Street, Medical Hub,<br />City Center, State 560001</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Quick Links */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-slate-800">Hours</h3>
+          <ul className="space-y-2 text-sm">
+            <li className="flex justify-between">
+              <span>Mon - Fri:</span>
+              <span className="font-medium text-slate-900">9:00 AM - 8:00 PM</span>
+            </li>
+            <li className="flex justify-between">
+              <span>Saturday:</span>
+              <span className="font-medium text-slate-900">10:00 AM - 6:00 PM</span>
+            </li>
+            <li className="flex justify-between">
+              <span>Sunday:</span>
+              <span className="text-sky-600 font-medium">Emergency Only</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 mt-16 pt-8 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+        <p>© {new Date().getFullYear()} Cuspids Dental Studio · All Rights Reserved</p>
+        <p>
+          Designed by <span className="text-sky-600 font-semibold">Zinth Labs</span>
         </p>
       </div>
     </footer>
